@@ -1,16 +1,17 @@
-#ifndef USER_H
-#define USER_H
+#ifndef CLIENT_H
+#define CLIENT_H
 
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include <timse.h>
+#include <time.h>
 
-typedef struct user {
+typedef struct client {
   char *name;
   float balance;
   float transfer_limit;
-
-} User;
+  char *password;
+  char *matricula;
+} Client;
 
 #endif
