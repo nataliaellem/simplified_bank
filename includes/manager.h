@@ -4,11 +4,13 @@
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
+#include "list.h"
+#include "client.h"
+#include "login.h"
 
 typedef struct manager{
   char *name;
   char *matricula;
-  char *password;
 } Manager;
 
 #endif
