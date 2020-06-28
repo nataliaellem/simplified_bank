@@ -7,6 +7,7 @@
 #include "client.h"
 #include "list.h"
 #include "manager.h"
+#include "login.h"
 
 
 

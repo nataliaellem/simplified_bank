@@ -5,16 +5,15 @@
 #include <string.h>
 #include <stdlib.h>
 #include "client.h"
-#include "list.h"
 #include "manager.h"
+#include "list.h"
 
-typedef struct user{
-  char *name;
-  char *matricula;
-  char *password;
-  char *role;
-  struct user *next;
-  struct user *prev;
-} User;
+
+User* login();
+void new_login(User *user);
+void set_user_name(User *user, char *name);
+void set_user_matricula(User *user, char *matricula);
+void set_user_password(User *user, char *password);
+void set_user_role(User *user, char *role);
 
 #endif
