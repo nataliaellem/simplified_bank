@@ -5,5 +5,6 @@
 #include <string.h>
 #include <stdlib.h>
 #include "list.h"
+#include "models.h"
 
 #endif

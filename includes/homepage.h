@@ -8,6 +8,7 @@
 #include "list.h"
 #include "manager.h"
 #include "login.h"
+#include "models.h"
 
 
 

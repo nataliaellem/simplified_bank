@@ -6,6 +6,7 @@
 #include <string.h>
 #include <time.h>
 #include "list.h"
+#include "models.h"
 
 void new_client(Client *client);
 void set_client_name(Client *block, char *name);
