@@ -5,6 +5,7 @@
 #include "includes/list.h"
 #include "includes/manager.h"
 #include "includes/homepage.h"
+#include "includes/models.h"
 
 int main(){
   FILE *login = fopen("storage/login.csv", "r");

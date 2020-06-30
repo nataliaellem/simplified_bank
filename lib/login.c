@@ -139,7 +139,7 @@ void print_list_logins(List *list){
   }
 }
 
-void new_user_block(List *list, User *user){
+List* new_user_block(List *list, User *user){
   List *new_block = (List*) malloc(sizeof(List));
   new_block->data = (Data*) malloc(sizeof(Data));
   new_block->data->user = (User*) malloc(sizeof(User));
@@ -163,22 +163,20 @@ void new_user_block(List *list, User *user){
     new_block->next = (List*) NULL;
     aux->next = new_block;
   }
-
+  return list;
 }
 
 List* filter_logins(List *list, char* (*block)(User*), char *attribute){
   List *aux;
   List *filtered_list = (List*) NULL;
   int i = 0;
-  for (aux = list; aux->next != NULL; aux = aux->next){
+  for (aux = list; aux != NULL; aux = aux->next){
     i++;
     char *role = (*block)(aux->data->user);
-    printf("ROLE %d : %s\n", i, role);
-    printf("ATTRIBUTE : %s\n", attribute);
     if (strcmp(role, attribute) == 0){
-      new_user_block(filtered_list, aux->data->user);
+      filtered_list = new_user_block(filtered_list, aux->data->user);
     }
   }
-  printf("FIRST : %x\n", filtered_list);
+
   return filtered_list;
 }

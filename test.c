@@ -34,5 +34,11 @@ int main(){
   rewind(login);
   fclose(login);
   get_user_name(logins_list->data->user);
+  // TEST FOR FILTER FUNCTION E NEW BLOCK FUNCTION
+  char *role = (char*) malloc(10 * sizeof(char));
+  char test[] = "client";
+  strcpy(role, test);
+  List *filtered_list = filter_logins(logins_list, get_user_role, role);
+  print_list_logins(filtered_list);
 return 0;
 }
