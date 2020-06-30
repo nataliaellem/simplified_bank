@@ -29,9 +29,10 @@ int main(){
       file_lines++;
     }
   }
-  User *logins_list = create_list_logins(login, file_lines);
+  List *logins_list = create_list_logins(login, file_lines);
   print_list_logins(logins_list);
   rewind(login);
   fclose(login);
+  get_user_name(logins_list->data->user);
 return 0;
 }

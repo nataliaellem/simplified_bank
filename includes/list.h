@@ -11,4 +11,7 @@ typedef struct list {
   struct list *next;
   Data *data;
 } List;
+
+void new_node(List *new_block);
+
 #endif
