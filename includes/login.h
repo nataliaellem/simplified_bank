@@ -11,7 +11,7 @@
 #include "helper.h"
 
 
-User* login();
+List* login(char *authenticated_role);
 void new_login(User *user);
 char* get_user_name(User *user);
 char* get_user_matricula(User *user);

@@ -1,6 +1,6 @@
 #include "../includes/login.h"
 
-User* login(){
+List* login(char *authenticated_role){
   FILE *login = fopen("storage/login.csv", "r");
   int file_lines = 0;
   for (char c = getc(login); c != EOF; c = getc(login)){
@@ -9,51 +9,97 @@ User* login(){
     }
   }
   List *logins_list = create_list_logins(login, file_lines);
+  List *authenticated_user = NULL;
   char *matricula;
-  printf("Do you want to login as a client or as a manager?\n");
-  printf("\t(1)Client\n");
-  printf("\t(2)Manager\n");
-  printf("Choose one of the options: ");
-  printf("\n");
+  char *password;
   int option;
   int k = 1;
   while(k){
+    printf("Do you want to login as a client or as a manager?\n");
+    printf("\n\t(1)CLIENT\n");
+    printf("\t(2)MANAGER\n\n");
+    printf("\tChoose one of the options: ");
     scanf("%d", &option);
+    printf("\n");
     switch (option) {
       case 1:
-        printf("Digite sua matricula: \n");
+        printf("Type your matriculation: ");
         __fpurge(stdin);
         matricula = reading();
+        printf("\n");
         int *length = (int*) malloc(sizeof(int));
         char role[] = "client";
+        strcpy(authenticated_role, role);
         List *client_logins = filter_logins(logins_list, get_user_role, role, length);
-
-      k = 0;
-      break;
+        List *aux;
+        for (aux = client_logins; aux != NULL; aux = aux->next){
+          char *comparative_matricula = get_user_matricula(aux->data->user);
+          if (strcmp(matricula, comparative_matricula) == 0){
+              authenticated_user = aux;
+          }
+        }
+        if (authenticated_user == NULL){
+          printf("Invalid matriculation, try again.\n");
+          return NULL;
+        } else {
+          k = 0;
+          printf("Type your password: ");
+          __fpurge(stdin);
+          password = reading();
+          printf("\n");
+          char *comparative_password = get_user_password(authenticated_user->data->user);
+          if (strcmp(password, comparative_password) == 0){
+            k = 0;
+            return authenticated_user;
+          } else {
+            printf("Incorrect password.\n");
+            return NULL;
+          }
+        }
+        break;
       case 2:
-      k = 0;
-      break;
+        printf("Type your matriculation: ");
+        __fpurge(stdin);
+        matricula = reading();
+        printf("\n");
+        int *length2 = (int*) malloc(sizeof(int));
+        char role2[] = "manager";
+        strcpy(authenticated_role, role2);
+        List *manager_logins = filter_logins(logins_list, get_user_role, role2, length2);
+        List *aux2;
+        for (aux2 = manager_logins; aux2 != NULL; aux2 = aux2->next){
+          char *comparative_matricula = get_user_matricula(aux2->data->user);
+          if (strcmp(matricula, comparative_matricula) == 0){
+              authenticated_user = aux2;
+          }
+        }
+        if (authenticated_user == NULL){
+          printf("Invalid matriculation, try again.\n");
+          return NULL;
+        } else {
+          k = 0;
+          printf("Type your password: ");
+          __fpurge(stdin);
+          password = reading();
+          printf("\n");
+          char *comparative_password = get_user_password(authenticated_user->data->user);
+          if (strcmp(password, comparative_password) == 0){
+            k = 0;
+            return authenticated_user;
+          } else {
+            printf("Incorrect password.\n");
+            return NULL;
+          }
+        }
+        break;
       default:
       printf("Invalid option, try again.");
       break;
     }
-
-    rewind(login);
-    fclose(login);
   }
-  // int i = 0;
-  // char *matricula = (char*) malloc(1 * sizeof(char));
-  // char c = matricula[i];
-  // while (c != '\n'){
-  //   scanf("%c", &matricula[i]);
-  //   char c = matricula[i];
-  //   i++;
-  //   matricula = (char*) realloc(matricula, (i+1) * sizeof(char));
-  //   printf("MATRICULA: %s\n", matricula);
-  // }
-
-  User *user = NULL;
-  return user;
+  rewind(login);
+  fclose(login);
+  return NULL;
 }
 
 void new_login(User *user){
@@ -114,8 +160,7 @@ List* create_list_logins(FILE *file, int file_lines){
   while(i < file_lines){
     char first_column[50], second_column[50], third_column[50], fourth_column[50];
     fscanf(file, "%[^,],%[^,],%[^,],%[^,],\n", first_column, second_column, third_column, fourth_column);
-    List *new_block = (List*) malloc(sizeof(List));
-    new_block->data = (Data*) malloc(sizeof(Data));
+    List *new_block = new_node();
     new_block->data->user = (User*) malloc(sizeof(User));
     new_login(new_block->data->user);
     set_user_name(new_block->data->user, first_column);
@@ -154,8 +199,6 @@ void print_list_logins(List *list){
 
 List* new_user_block(List *list, User *user){
   List *new_block = new_node();
-  // List *new_block = (List*) malloc(sizeof(List));
-  // new_block->data = (Data*) malloc(sizeof(Data));
   new_block->data->user = (User*) malloc(sizeof(User));
   char *name = get_user_name(user);
   char *matricula = get_user_matricula(user);

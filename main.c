@@ -11,24 +11,25 @@
 
 
 int main(){
-  FILE *file = fopen("storage/login.csv", "r");
-  int  file_lines = 0;
-  for (char c = getc(file); c != EOF; c = getc(file)){
-    if (c == '\n'){
-      file_lines++;
-    }
-  }
-  List *logins_list = create_list_logins(file, file_lines);
-  //print_list_logins(logins_list);
-  rewind(file);
-  fclose(file);
-  char *role = (char*) malloc(10 * sizeof(char));
-  char test[] = "client";
-  strcpy(role, test);
-  int *length = (int*) malloc(sizeof(int));
-  List *filtered_list = filter_logins(logins_list, get_user_role, role, length);
-  print_list_logins(filtered_list);
-  // login();
-
+  // FILE *file = fopen("storage/login.csv", "r");
+  // int  file_lines = 0;
+  // for (char c = getc(file); c != EOF; c = getc(file)){
+  //   if (c == '\n'){
+  //     file_lines++;
+  //   }
+  // }
+  // List *logins_list = create_list_logins(file, file_lines);
+  // //print_list_logins(logins_list);
+  // rewind(file);
+  // fclose(file);
+  // char *role = (char*) malloc(10 * sizeof(char));
+  // char test[] = "client";
+  // strcpy(role, test);
+  // int *length = (int*) malloc(sizeof(int));
+  // List *filtered_list = filter_logins(logins_list, get_user_role, role, length);
+  // print_list_logins(filtered_list);
+  char authenticated_role[8];
+  login(authenticated_role);
+  printf("AUTHENTICATED ROLE : %s\n", authenticated_role);
   return 0;
 }
