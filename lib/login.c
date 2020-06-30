@@ -1,21 +1,32 @@
 #include "../includes/login.h"
 
 User* login(){
-  char *matricula = (char*) malloc(20 * sizeof(char));
+  FILE *login = fopen("storage/login.csv", "r");
+  int file_lines = 0;
+  for (char c = getc(login); c != EOF; c = getc(login)){
+    if (c == '\n'){
+      file_lines++;
+    }
+  }
+  List *logins_list = create_list_logins(login, file_lines);
+  char *matricula;
   printf("Do you want to login as a client or as a manager?\n");
   printf("\t(1)Client\n");
   printf("\t(2)Manager\n");
-  printf("Choose one of the options\n");
+  printf("Choose one of the options: ");
+  printf("\n");
   int option;
   int k = 1;
   while(k){
     scanf("%d", &option);
     switch (option) {
       case 1:
-      printf("Digite sua matricula: \n");
-      __fpurge(stdin);
-      scanf("%[^\n]", matricula);
-      printf("\n");
+        printf("Digite sua matricula: \n");
+        __fpurge(stdin);
+        matricula = reading();
+        int *length = (int*) malloc(sizeof(int));
+        char role[] = "client";
+        List *client_logins = filter_logins(logins_list, get_user_role, role, length);
 
       k = 0;
       break;
@@ -27,6 +38,8 @@ User* login(){
       break;
     }
 
+    rewind(login);
+    fclose(login);
   }
   // int i = 0;
   // char *matricula = (char*) malloc(1 * sizeof(char));
@@ -140,8 +153,9 @@ void print_list_logins(List *list){
 }
 
 List* new_user_block(List *list, User *user){
-  List *new_block = (List*) malloc(sizeof(List));
-  new_block->data = (Data*) malloc(sizeof(Data));
+  List *new_block = new_node();
+  // List *new_block = (List*) malloc(sizeof(List));
+  // new_block->data = (Data*) malloc(sizeof(Data));
   new_block->data->user = (User*) malloc(sizeof(User));
   char *name = get_user_name(user);
   char *matricula = get_user_matricula(user);
@@ -166,17 +180,18 @@ List* new_user_block(List *list, User *user){
   return list;
 }
 
-List* filter_logins(List *list, char* (*block)(User*), char *attribute){
+List* filter_logins(List *list, char* (*block)(User*), char *attribute, int *length){
   List *aux;
   List *filtered_list = (List*) NULL;
   int i = 0;
+  *length = 0;
   for (aux = list; aux != NULL; aux = aux->next){
     i++;
     char *role = (*block)(aux->data->user);
     if (strcmp(role, attribute) == 0){
+      *length = *length + 1;
       filtered_list = new_user_block(filtered_list, aux->data->user);
     }
   }
-
   return filtered_list;
 }

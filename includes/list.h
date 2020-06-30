@@ -5,6 +5,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include "models.h"
+#include "helper.h"
 
 typedef struct list {
   struct list *prev;
@@ -12,6 +13,6 @@ typedef struct list {
   Data *data;
 } List;
 
-void new_node(List *new_block);
+List* new_node();
 
 #endif

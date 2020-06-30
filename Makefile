@@ -14,7 +14,8 @@ build:
 	$(CC) $(CFLAGS) -c lib/manager.c -o manager.out
 	$(CC) $(CFLAGS) -c lib/homepage.c -o homepage.out
 	$(CC) $(CFLAGS) -c lib/login.c -o login.out
-	$(CC) $(CFLAGS) main.c list.out client.out manager.out homepage.out login.out -o $(EXEC)
+	$(CC) $(CFLAGS) -c lib/helper.c -o helper.out
+	$(CC) $(CFLAGS) main.c list.out client.out manager.out homepage.out login.out helper.out -o $(EXEC)
 
 clean:
-	rm -rf list.out client.out manager.out homepage.out login.out
+	rm -rf list.out client.out manager.out homepage.out login.out helper.out

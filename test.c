@@ -38,7 +38,11 @@ int main(){
   char *role = (char*) malloc(10 * sizeof(char));
   char test[] = "client";
   strcpy(role, test);
-  List *filtered_list = filter_logins(logins_list, get_user_role, role);
+  int *length = (int*) malloc(sizeof(int));
+  List *filtered_list = filter_logins(logins_list, get_user_role, role, length);
   print_list_logins(filtered_list);
+  printf("LENGTH : %d\n", *length);
+  char *matricula = reading();
+  
 return 0;
 }
