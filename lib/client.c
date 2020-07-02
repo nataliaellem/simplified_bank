@@ -10,11 +10,11 @@ void set_client_name(Client *node, char *name){
 }
 
 void set_client_balance(Client *node, char *balance){
-  node->balance = atof(balance);
+  strcpy(node->balance, balance);
 }
 
 void set_client_transfer_limit(Client *node, char *transfer_limit){
-  node->transfer_limit = atof(transfer_limit);
+  strcpy(node->transfer_limit, transfer_limit);
 }
 
 void set_client_matricula(Client *node, char *matricula){
@@ -43,17 +43,18 @@ List* create_list_accounts(FILE *file, int file_lines){
     set_client_matricula(new_block->data->client, second_column);
     set_client_balance(new_block->data->client, third_column);
     set_client_transfer_limit(new_block->data->client, fourth_column);
+    List *aux;
     if (list == NULL){
       new_block->prev = (List*) NULL;
       new_block->next = (List*) NULL;
       list = new_block;
+      aux = list;
     }
     else {
-      List *aux;
-      for (aux=list; aux->next!=NULL; aux=aux->next);
       new_block->prev = aux;
       new_block->next = (List*) NULL;
       aux->next = new_block;
+      aux = aux->next;
     }
     i++;
   }
@@ -68,8 +69,8 @@ void print_list_of_clients(List *list){
     i++;
     printf("NAME OF CLIENT %d: %s\n", i, aux->data->client->name);
     printf("MATRICULA OF CLIENT %d: %s\n", i, aux->data->client->matricula);
-    printf("BALANCE OF CLIENT %d: %2f\n", i, aux->data->client->balance);
-    printf("TRANSFER LIMIT OF CLIENT %d: %2f\n", i, aux->data->client->transfer_limit);
+    printf("BALANCE OF CLIENT %d: %s\n", i, aux->data->client->balance);
+    printf("TRANSFER LIMIT OF CLIENT %d: %s\n", i, aux->data->client->transfer_limit);
     printf("\n");
 	}
 }

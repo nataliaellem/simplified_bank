@@ -16,13 +16,14 @@ List* login(char *authenticated_role){
   int k = 1;
   while(k){
     printf("Do you want to login as a client or as a manager?\n");
-    printf("\n\t(1)CLIENT\n");
-    printf("\t(2)MANAGER\n\n");
-    printf("\tChoose one of the options: ");
+    printf("(1) CLIENT\n");
+    printf("(2) MANAGER\n");
+    printf("Choose one of the options: ");
     scanf("%d", &option);
     printf("\n");
     switch (option) {
       case 1:
+        system("clear");
         printf("Type your matriculation: ");
         __fpurge(stdin);
         matricula = reading();
@@ -40,24 +41,23 @@ List* login(char *authenticated_role){
         }
         if (authenticated_user == NULL){
           printf("Invalid matriculation, try again.\n");
-          return NULL;
         } else {
-          k = 0;
-          printf("Type your password: ");
-          __fpurge(stdin);
-          password = reading();
-          printf("\n");
-          char *comparative_password = get_user_password(authenticated_user->data->user);
-          if (strcmp(password, comparative_password) == 0){
             k = 0;
-            return authenticated_user;
-          } else {
-            printf("Incorrect password.\n");
-            return NULL;
-          }
+            printf("Type your password: ");
+            __fpurge(stdin);
+            password = reading();
+            printf("\n");
+            char *comparative_password = get_user_password(authenticated_user->data->user);
+            if (strcmp(password, comparative_password) == 0){
+              k = 0;
+              return authenticated_user;
+            } else {
+              printf("Incorrect password.\n");
+            }
         }
         break;
       case 2:
+        system("clear");
         printf("Type your matriculation: ");
         __fpurge(stdin);
         matricula = reading();
@@ -75,25 +75,24 @@ List* login(char *authenticated_role){
         }
         if (authenticated_user == NULL){
           printf("Invalid matriculation, try again.\n");
-          return NULL;
         } else {
-          k = 0;
-          printf("Type your password: ");
-          __fpurge(stdin);
-          password = reading();
-          printf("\n");
-          char *comparative_password = get_user_password(authenticated_user->data->user);
-          if (strcmp(password, comparative_password) == 0){
             k = 0;
-            return authenticated_user;
-          } else {
-            printf("Incorrect password.\n");
-            return NULL;
-          }
+            printf("Type your password: ");
+            __fpurge(stdin);
+            password = reading();
+            printf("\n");
+            char *comparative_password = get_user_password(authenticated_user->data->user);
+            if (strcmp(password, comparative_password) == 0){
+              k = 0;
+              return authenticated_user;
+            } else {
+                printf("Incorrect password.\n");
+            }
         }
         break;
       default:
-      printf("Invalid option, try again.");
+      system("clear");
+      printf("Invalid option, try again.\n\n");
       break;
     }
   }

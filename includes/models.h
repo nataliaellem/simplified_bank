@@ -14,9 +14,9 @@ typedef struct user{
 
 typedef struct client {
   char *name;
-  float balance;
-  float transfer_limit;
   char *matricula;
+  char *balance;
+  char *transfer_limit;
 } Client;
 
 typedef struct manager{

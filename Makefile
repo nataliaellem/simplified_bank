@@ -24,4 +24,4 @@ build:
 	$(CC) $(CFLAGS) main.c list.out client.out manager.out homepage.out login.out helper.out -o $(EXEC)
 
 clean:
-	rm -rf list.out client.out manager.out homepage.out login.out helper.out test.out
+	rm -rf list.out client.out manager.out homepage.out login.out helper.out 
