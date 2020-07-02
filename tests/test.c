@@ -10,16 +10,21 @@
 
 int main(){
   //TEST FOR FUNCTIONS TO ACCOUNTS LIST
-  FILE *accounts = fopen("storage/test_accounts.csv", "r");
+  FILE *accounts = fopen("tests/test_accounts.csv", "r");
   int file_lines = 0;
+  if (accounts == NULL){
+    printf("FILE ACCOUNTS NOT FOUND.\n");
+    return 0;
+  }
   for (char c = getc(accounts); c != EOF; c = getc(accounts)){
     if (c == '\n'){
       file_lines++;
     }
   }
   if (file_lines == 3){
-    printf("FILE LINES PASSED\n");
+    printf("\nFILE LINES PASSED");
   }
+  printf("\n______________________________________________________________________\n");
   List *list = create_list_logins(accounts, file_lines);
   char first_name[] = "Natalia Ellem";
   char sec_name[] = "Alan Bispo";
@@ -39,13 +44,13 @@ int main(){
         if (strcmp(list->next->data->client->balance, sec_balance) == 0 && strcmp(list->next->data->client->transfer_limit, sec_transfer_limit) == 0){
           if (strcmp(list->next->next->data->client->name, third_name) == 0 && strcmp(list->next->next->data->client->matricula, third_matricula) == 0){
             if (strcmp(list->next->next->data->client->balance, third_balance) == 0 && strcmp(list->next->next->data->client->transfer_limit, third_transfer_limit) == 0){
-              printf("\nTEST WITH FUNCTION 'CREATE_LIST_ACCOUNTS' PASSED!\n\n");
+              printf("TEST WITH FUNCTION 'CREATE_LIST_ACCOUNTS' PASSED!");
             }
           }
         }
       }
       else {
-        printf("\nTEST NOT PASSED.\n");
+        printf("TEST WITH FUNCTION 'CREATE_LIST_ACCOUNTS' NOT PASSED.");
       }
     }
   }
@@ -55,7 +60,7 @@ int main(){
  printf("\n______________________________________________________________________\n");
 
   //TEST FOR FUNCTIONS TO LOGINS LIST
-  FILE *file = fopen("storage/test_logins.csv", "r");
+  FILE *file = fopen("tests/test_logins.csv", "r");
   file_lines = 0;
   for (char c = getc(file); c != EOF; c = getc(file)){
     if (c == '\n'){
@@ -98,24 +103,64 @@ int main(){
     }
   }
   else {
-    printf("\nTEST NOT PASSED.\n");
+    printf("TEST WITH FUNCTION 'CREATE_LIST_LOGINS' NOT PASSED.");
   }
   rewind(file);
   fclose(file);
   printf("\n______________________________________________________________________\n");
-  get_user_name(logins_list->data->user);
+  char *test_name = get_user_name(logins_list->data->user);
+  if (strcmp(test_name, "Antonio") == 0){
+    printf("GET USER NAME PASSED.");
+  }
+  printf("\n______________________________________________________________________\n");
   // TEST FOR FILTER FUNCTION E NEW BLOCK FUNCTION
   char *role = (char*) malloc(10 * sizeof(char));
   char test[] = "client";
   strcpy(role, test);
   int *length = (int*) malloc(sizeof(int));
   List *filtered_list = filter_logins(logins_list, get_user_role, role, length);
-  print_list_logins(filtered_list);
-  printf("LENGTH : %d\n", *length);
-  char *matricula = reading();
-  char authenticated_role[8];
-  login(authenticated_role);
-  printf("AUTHENTICATED ROLE : %s\n", authenticated_role);
+  char first_name_filtered[] = "Natalia Ellem";
+  char sec_name_filtered[] = "Alan Bispo";
+  char third_name_filtered[] = "Pedro";
+  char first_matricula_filtered[] = "20201";
+  char sec_matricula_filtered[] = "20202";
+  char third_matricula_filtered[] = "20203";
+  char first_password_filtered[] = "12345678";
+  char sec_password_filtered[] = "12345678";
+  char third_password_filtered[] = "12345678";
+  char first_role_filtered[] = "client";
+  char sec_role_filtered[] = "client";
+  char third_role_filtered[] = "client";
+  if (strcmp(filtered_list->data->user->name, first_name_filtered) == 0 && strcmp(filtered_list->data->user->matricula, first_matricula_filtered) == 0){
+    if (strcmp(filtered_list->data->user->password, first_password_filtered) == 0 && strcmp(filtered_list->data->user->role, first_role_filtered) == 0){
+      if (strcmp(filtered_list->next->data->user->name, sec_name_filtered) == 0 && strcmp(filtered_list->next->data->user->matricula, sec_matricula_filtered) == 0){
+        if (strcmp(filtered_list->next->data->user->password, sec_password_filtered) == 0 && strcmp(filtered_list->next->data->user->role, sec_role_filtered) == 0){
+          if (strcmp(filtered_list->next->next->data->user->name, third_name_filtered) == 0 && strcmp(filtered_list->next->next->data->user->matricula, third_matricula_filtered) == 0){
+            if (strcmp(filtered_list->next->next->data->user->password, third_password_filtered) == 0 && strcmp(filtered_list->next->next->data->user->role, third_role_filtered) == 0){
+                  printf("\nTEST WITH FUNCTION 'FILTER_LOGINS' PASSED!\n");
+            }
+          }
+        }
+      }
+    }
+  }
+  else {
+    printf("TEST WITH FUNCTION 'FILTER_LOGINS' NOT PASSED.");
+  }
+  printf("\n______________________________________________________________________\n");
+//  print_list_logins(filtered_list);
+//   printf("LENGTH : %d\n", *length);
+  if (*length == 3){
+    printf("TEST LENGTH PASSED");
+  }
+  else {
+    printf("TEST LENGTH NOT PASSED");
+  }
+  printf("\n______________________________________________________________________\n");
+  //char *matricula = reading();
+  //char authenticated_role[8];
+  //login(authenticated_role);
+  //printf("AUTHENTICATED ROLE : %s\n", authenticated_role);
 
 return 0;
 }
