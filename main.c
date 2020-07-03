@@ -28,8 +28,6 @@ int main(){
   // int *length = (int*) malloc(sizeof(int));
   // List *filtered_list = filter_logins(logins_list, get_user_role, role, length);
   // print_list_logins(filtered_list);
-  char authenticated_role[8];
-  login(authenticated_role);
-  printf("AUTHENTICATED ROLE : %s\n", authenticated_role);
+  home_page();
   return 0;
 }

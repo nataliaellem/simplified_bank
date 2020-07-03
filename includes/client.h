@@ -16,5 +16,6 @@ void set_client_transfer_limit(Client *block, char *transfer_limit);
 void set_client_matricula(Client *block, char *matricula);
 List* create_list_accounts(FILE *file, int file_lines);
 void print_list_of_clients(List *list);
+void client_menu(List *node);
 
 #endif

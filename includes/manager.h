@@ -7,4 +7,6 @@
 #include "list.h"
 #include "models.h"
 
+void manager_menu(List *node);
+
 #endif

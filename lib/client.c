@@ -74,3 +74,7 @@ void print_list_of_clients(List *list){
     printf("\n");
 	}
 }
+
+void client_menu(List *node){
+  printf("\n\n");
+}
