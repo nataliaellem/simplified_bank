@@ -18,6 +18,7 @@ void manager_menu(List *node){
     switch (option) {
       case 1:
         system("clear");
+        creat_new_account();
         break;
       case 2:
         system("clear");
@@ -42,4 +43,12 @@ void manager_menu(List *node){
         break;
     }
   }
+}
+
+void creat_new_account(){
+  printf("Do you want to create a manager or a client account?\n");
+  printf("\t(1) Manager account\n\t(2) Client account\n\nChoose one option: \n")
+  int option;
+  scanf("%d", &option);
+  printf("\n");
 }

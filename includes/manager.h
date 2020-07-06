@@ -8,5 +8,6 @@
 #include "models.h"
 
 void manager_menu(List *node);
+void creat_new_account();
 
 #endif
