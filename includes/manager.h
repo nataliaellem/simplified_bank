@@ -9,5 +9,6 @@
 
 void manager_menu(List *node);
 void creat_new_account();
+void new_account(char *role);
 
 #endif
