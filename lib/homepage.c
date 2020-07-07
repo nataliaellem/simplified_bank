@@ -8,7 +8,7 @@ void home_page(){
   if (strcmp(authenticated_role, manager) == 0){
     manager_menu(authenticated_user);
   }
-  else if (stcmp(authenticated_role, client) == 0) {
+  else if (strcmp(authenticated_role, client) == 0) {
     client_menu(authenticated_user);
   }
 }
