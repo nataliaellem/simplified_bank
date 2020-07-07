@@ -162,5 +162,9 @@ int main(){
   //login(authenticated_role);
   //printf("AUTHENTICATED ROLE : %s\n", authenticated_role);
 
+  // char client[] = "client";
+  // char manager[] = "manager";
+  // char anything[] = "anything";
+  // new_account(anything);
 return 0;
 }
