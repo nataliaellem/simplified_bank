@@ -28,6 +28,10 @@ int main(){
   // int *length = (int*) malloc(sizeof(int));
   // List *filtered_list = filter_logins(logins_list, get_user_role, role, length);
   // print_list_logins(filtered_list);
-  home_page();
+//  home_page();
+char client[] = "client";
+char manager[] = "manager";
+char anything[] = "anything";
+new_account(anything);
   return 0;
 }

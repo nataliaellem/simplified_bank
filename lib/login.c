@@ -83,6 +83,7 @@ List* login(char *authenticated_role){
             printf("\n");
             char *comparative_password = get_user_password(authenticated_user->data->user);
             if (strcmp(password, comparative_password) == 0){
+              printf("Login succeded!\n\n");
               k = 0;
               return authenticated_user;
             } else {
