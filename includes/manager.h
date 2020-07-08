@@ -10,5 +10,6 @@
 void manager_menu(List *node);
 void creat_new_account();
 void new_account(char *role);
+void new_client_data(char *name, char *matricula);
 
 #endif

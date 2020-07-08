@@ -31,7 +31,6 @@ int main(){
 //  home_page();
 char client[] = "client";
 char manager[] = "manager";
-char anything[] = "anything";
-new_account(anything);
+new_account(client);
   return 0;
 }

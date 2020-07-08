@@ -9,12 +9,12 @@ void set_client_name(Client *node, char *name){
   strcpy(node->name, name);
 }
 
-void set_client_balance(Client *node, char *balance){
-  strcpy(node->balance, balance);
+void set_client_balance(Client *node, float balance){
+  node->balance = balance;
 }
 
-void set_client_transfer_limit(Client *node, char *transfer_limit){
-  strcpy(node->transfer_limit, transfer_limit);
+void set_client_transfer_limit(Client *node, float transfer_limit){
+  node->transfer_limit = transfer_limit;
 }
 
 void set_client_matricula(Client *node, char *matricula){
@@ -28,10 +28,12 @@ List* create_list_accounts(FILE *file, int file_lines){
     return list;
   }
   rewind(file);
-  char first_column[50], second_column[50], third_column[50], fourth_column[50];
+  char first_column[50], second_column[50];
+  float third_column;
+  float fourth_column;
   int i = 0;
   while(i < file_lines){
-    fscanf(file, "%[^,],%[^,],%[^,],%[^,],\n", first_column, second_column, third_column, fourth_column);
+    fscanf(file, "%[^,],%[^,],%f,%f,\n", first_column, second_column, &third_column, &fourth_column);
     // printf("FIRST COLUMN: %s\n", first_column);
     // printf("second COLUMN: %s\n", second_column);
     // printf("third COLUMN: %s\n", third_column);
@@ -69,8 +71,8 @@ void print_list_of_clients(List *list){
     i++;
     printf("NAME OF CLIENT %d: %s\n", i, aux->data->client->name);
     printf("MATRICULA OF CLIENT %d: %s\n", i, aux->data->client->matricula);
-    printf("BALANCE OF CLIENT %d: %s\n", i, aux->data->client->balance);
-    printf("TRANSFER LIMIT OF CLIENT %d: %s\n", i, aux->data->client->transfer_limit);
+    printf("BALANCE OF CLIENT %d: %f\n", i, aux->data->client->balance);
+    printf("TRANSFER LIMIT OF CLIENT %d: %f\n", i, aux->data->client->transfer_limit);
     printf("\n");
 	}
 }

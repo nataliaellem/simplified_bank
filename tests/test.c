@@ -32,18 +32,18 @@ int main(){
   char first_matricula[] = "20201";
   char sec_matricula[] = "20202";
   char third_matricula[] = "20203";
-  char first_balance[] = "10000";
-  char sec_balance[] = "10000";
-  char third_balance[] = "10000";
-  char first_transfer_limit[] = "1000";
-  char sec_transfer_limit[] = "1000";
-  char third_transfer_limit[] = "1000";
+  float first_balance = 10000;
+  float sec_balance = 10000;
+  float third_balance = 10000;
+  float first_transfer_limit = 1000;
+  float sec_transfer_limit = 1000;
+  float third_transfer_limit = 1000;
   if (strcmp(list->data->client->name, first_name) == 0 && strcmp(list->data->client->matricula, first_matricula) == 0){
-    if (strcmp(list->data->client->balance, first_balance) == 0 && strcmp(list->data->client->transfer_limit, first_transfer_limit) == 0){
+    if (list->data->client->balance == first_balance && list->data->client->transfer_limit == first_transfer_limit){
       if (strcmp(list->next->data->client->name, sec_name) == 0 && strcmp(list->next->data->client->matricula, sec_matricula) == 0){
-        if (strcmp(list->next->data->client->balance, sec_balance) == 0 && strcmp(list->next->data->client->transfer_limit, sec_transfer_limit) == 0){
+        if (list->next->data->client->balance == sec_balance && list->next->data->client->transfer_limit == sec_transfer_limit){
           if (strcmp(list->next->next->data->client->name, third_name) == 0 && strcmp(list->next->next->data->client->matricula, third_matricula) == 0){
-            if (strcmp(list->next->next->data->client->balance, third_balance) == 0 && strcmp(list->next->next->data->client->transfer_limit, third_transfer_limit) == 0){
+            if (list->next->next->data->client->balance == third_balance && list->next->next->data->client->transfer_limit == third_transfer_limit){
               printf("TEST WITH FUNCTION 'CREATE_LIST_ACCOUNTS' PASSED!");
             }
           }

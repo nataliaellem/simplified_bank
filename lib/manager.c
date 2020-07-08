@@ -85,7 +85,7 @@ void new_account(char *role){
     digits = 8;
   }
   else {
-    printf("Itsn't possible to create a new account without a role client or manager.\n");
+    printf("Impossible to create a new account without a role client or manager.\n");
     return;
   }
   printf("Type the name of the new %s: ", role);
@@ -119,6 +119,7 @@ void new_account(char *role){
     mat = fopen("storage/manager_mat.val", "w");
     fprintf(mat, "%d\n", new_matriculation);
     fclose(mat);
+    printf("New account created.\n\n");
   }
   else if (strcmp(role, client) == 0){
     digits = 8;
@@ -129,6 +130,9 @@ void new_account(char *role){
     mat = fopen("storage/client_mat.val", "w");
     fprintf(mat, "%d\n", new_matriculation);
     fclose(mat);
+    char matricula[50];
+    sprintf(matricula, "%d", new_matriculation);
+    new_client_data(name, matricula);
   }
   char matriculation[50];
   sprintf(matriculation, "%d", new_matriculation);
@@ -136,5 +140,17 @@ void new_account(char *role){
   fprintf(file, "%s,%s,%s,%s,\n", name, matriculation, password, role);
   rewind(file);
   fclose(file);
-  printf("New account created.\n\n");
+}
+
+void new_client_data(char *name, char *matricula){
+  printf("Enter the customer's initial balance: ");
+  float balance;
+  scanf("%f", &balance);
+  printf("Enter the customer's initial transfer limit: ");
+  float transfer_limit;
+  scanf("%f", &transfer_limit);
+  FILE *file = fopen("storage/accounts.csv", "a");
+  fprintf(file, "%s,%s,%.2f,%.2f,", name, matricula, balance, transfer_limit);
+  fclose(file);
+  printf("New account created.\n");
 }
