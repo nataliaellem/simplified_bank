@@ -36,10 +36,11 @@ List* create_list_accounts(FILE *file, int file_lines){
     fscanf(file, "%[^,],%[^,],%f,%f,\n", first_column, second_column, &third_column, &fourth_column);
     // printf("FIRST COLUMN: %s\n", first_column);
     // printf("second COLUMN: %s\n", second_column);
-    // printf("third COLUMN: %s\n", third_column);
-    // printf("Fourth COLUMN: %s\n", fourth_column);
+    // printf("third COLUMN: %f\n", third_column);
+    // printf("Fourth COLUMN: %f\n", fourth_column);
     List *new_block = (List*) malloc(sizeof(List));
-    new_block->data->client = (Client*) malloc(sizeof(Client));
+    new_block->data = malloc(sizeof(Client)); //YOU HAVE TO MALLOC THE DATA UNION AND THE CLIENT STRUCT THAT IS INSIDE DATA 
+    new_block->data->client = malloc(sizeof(Client));
     new_client(new_block->data->client);
     set_client_name(new_block->data->client, first_column);
     set_client_matricula(new_block->data->client, second_column);
@@ -71,8 +72,8 @@ void print_list_of_clients(List *list){
     i++;
     printf("NAME OF CLIENT %d: %s\n", i, aux->data->client->name);
     printf("MATRICULA OF CLIENT %d: %s\n", i, aux->data->client->matricula);
-    printf("BALANCE OF CLIENT %d: %f\n", i, aux->data->client->balance);
-    printf("TRANSFER LIMIT OF CLIENT %d: %f\n", i, aux->data->client->transfer_limit);
+    printf("BALANCE OF CLIENT %d: %.2f\n", i, aux->data->client->balance);
+    printf("TRANSFER LIMIT OF CLIENT %d: %.2f\n", i, aux->data->client->transfer_limit);
     printf("\n");
 	}
 }

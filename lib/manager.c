@@ -110,6 +110,7 @@ void new_account(char *role){
     }
   }
   int new_matriculation;
+  char char_matricula[50];
   if (strcmp(role, manager) == 0){
     digits = 5;
     FILE *mat = fopen("storage/manager_mat.val", "r");
@@ -130,14 +131,11 @@ void new_account(char *role){
     mat = fopen("storage/client_mat.val", "w");
     fprintf(mat, "%d\n", new_matriculation);
     fclose(mat);
-    char matricula[50];
-    sprintf(matricula, "%d", new_matriculation);
-    new_client_data(name, matricula);
+    sprintf(char_matricula, "%d", new_matriculation);
+    new_client_data(name, char_matricula);
   }
-  char matriculation[50];
-  sprintf(matriculation, "%d", new_matriculation);
   FILE *file = fopen("storage/login.csv", "a");
-  fprintf(file, "%s,%s,%s,%s,\n", name, matriculation, password, role);
+  fprintf(file, "%s,%s,%s,%s,\n", name, char_matricula, password, role);
   rewind(file);
   fclose(file);
 }

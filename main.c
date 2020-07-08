@@ -32,5 +32,6 @@ int main(){
 char client[] = "client";
 char manager[] = "manager";
 new_account(client);
-  return 0;
+
+return 0;
 }
