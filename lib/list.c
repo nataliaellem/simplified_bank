@@ -5,10 +5,25 @@ List* new_node(){
   return new_block;
 }
 
-void delete_block(List *node){
-  node->prev->next = node->next;
-  node->next->prev = node->prev;
-  free(node);
+void delete_block(List *list, int position){
+  List *aux = list;
+  for (int i = 1; i < position+1; i++){
+    if (i == position){
+      if (aux->prev == NULL){
+        aux->next->prev = NULL;
+        list = aux->next;
+      } else if (aux->next == NULL){
+        printf(" NEXT : %x\n", aux->next);
+          aux->prev->next = NULL;
+      } else {
+        aux->prev->next = aux->next;
+        aux->next->prev = aux->prev;
+      }
+      //free(aux);
+      return;
+    }
+    aux = aux->next;
+  }
 }
 
 void new_linked_block(List *list, List *new_block){

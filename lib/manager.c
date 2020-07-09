@@ -1,11 +1,10 @@
 #include "../includes/manager.h"
 
 void manager_menu(){
-  printf("DEBUG \n");
   int k = 1;
   int option;
   while (k){
-    printf("\n\tMANAGER MENU\n");
+    printf("\nMANAGER MENU\n\n");
     printf("What option do you want to execute? \n\n");
     printf("\t(1) Create new account\n");
     printf("\t(2) Delete an account\n");
@@ -196,10 +195,9 @@ void delete_account(char *matricula, char *role){
       fclose(file);
       List *aux;
       List *authenticated_user = NULL;
-      for (aux = logins; aux->next != NULL; aux = aux->next){
+      for (aux = logins; aux != NULL; aux = aux->next){
         if (strcmp(aux->data->user->matricula, matricula) == 0){
           authenticated_user = aux;
-          aux = NULL;
           printf("Are you sure you want to delete %s's account?\n(y)Yes\n(n)No\nChoose one: ", authenticated_user->data->user->name);
           char op;
           scanf("%c", &op);
@@ -207,24 +205,36 @@ void delete_account(char *matricula, char *role){
             case 'y':
               printf("\n");
               printf("Deleted account.\n");
-              printf("debug\n");
               break;
             case 'n':
               printf("Account not deleted.\n");
               return;
             default:
               printf("Invalid option. Try again.\n");
+              return;
               break;
           }
         }
       }
-      printf("debug\n");
       if (authenticated_user == NULL){
         printf("Invalid matriculation, try again.\n");
         return;
       } else{
+        char *aut_matricula = get_user_matricula(authenticated_user->data->user);
+        List *aux2;
+        int count = 0;
+        int position;
+        for (aux2 = logins; aux2 != NULL; aux2 = aux2->next){
+          count++;
+          char *aux_matricula = get_user_matricula(aux2->data->user);
+          if (strcmp(aut_matricula, aux_matricula) == 0){
+            position = count;
+            break;
+          }
+        }
+        delete_block(logins, position);
         printf("LOGINS AFTER\n______________________________________\n");
-        delete_block(authenticated_user);
+        print_list_logins(logins);
         printf("\n______________________________________\n");
       }
     }

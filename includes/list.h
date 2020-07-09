@@ -14,7 +14,7 @@ typedef struct list {
 } List;
 
 List* new_node();
-void delete_block(List *node);
+void delete_block(List *list, int position);
 void new_linked_block(List *list, List *new_block);
 
 #endif
