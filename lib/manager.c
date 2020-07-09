@@ -1,6 +1,7 @@
 #include "../includes/manager.h"
 
-void manager_menu(List *node){
+void manager_menu(){
+  printf("DEBUG \n");
   int k = 1;
   int option;
   while (k){
@@ -16,6 +17,7 @@ void manager_menu(List *node){
     printf("Choose one: ");
     scanf("%d", &option);
     printf("\n");
+    int n = 1;
     switch (option) {
       case 1:
         system("clear");
@@ -23,6 +25,31 @@ void manager_menu(List *node){
         break;
       case 2:
         system("clear");
+        while (n){
+          printf("Do you want to delete a (1)manager or a (2)client account?\nChoose one: ");
+          int opt;
+          scanf("%d", &opt);
+          printf("\n");
+          char manager[] = "manager";
+          char client[] = "client";
+          printf("Enter the registration number of the account you want to delete: ");
+          char *matricula = reading();
+          printf("\n");
+          switch(opt){
+            case 1:
+              delete_account(matricula, manager);
+              n = 0;
+              break;
+            case 2:
+              delete_account(matricula, client);
+              n = 0;
+              break;
+            default:
+              printf("invalid option for account type, try again.\n");
+              break;
+          }
+        }
+
         break;
       case 3:
         system("clear");
@@ -151,4 +178,54 @@ void new_client_data(char *name, char *matricula){
   fprintf(file, "%s,%s,%.2f,%.2f,", name, matricula, balance, transfer_limit);
   fclose(file);
   printf("New account created.\n");
+}
+
+void delete_account(char *matricula, char *role){
+    char manager[] = "manager";
+    char client[] = "client";
+    if (strcmp(manager, role) == 0){
+      FILE *file = fopen("storage/login.csv", "r");
+      int file_lines = 0;
+      for (char c = getc(file); c != EOF; c = getc(file)){
+        if (c == '\n'){
+          file_lines++;
+        }
+      }
+      List *logins = create_list_logins(file, file_lines);
+      rewind(file);
+      fclose(file);
+      List *aux;
+      List *authenticated_user = NULL;
+      for (aux = logins; aux->next != NULL; aux = aux->next){
+        if (strcmp(aux->data->user->matricula, matricula) == 0){
+          authenticated_user = aux;
+          aux = NULL;
+          printf("Are you sure you want to delete %s's account?\n(y)Yes\n(n)No\nChoose one: ", authenticated_user->data->user->name);
+          char op;
+          scanf("%c", &op);
+          switch(op){
+            case 'y':
+              printf("\n");
+              printf("Deleted account.\n");
+              printf("debug\n");
+              break;
+            case 'n':
+              printf("Account not deleted.\n");
+              return;
+            default:
+              printf("Invalid option. Try again.\n");
+              break;
+          }
+        }
+      }
+      printf("debug\n");
+      if (authenticated_user == NULL){
+        printf("Invalid matriculation, try again.\n");
+        return;
+      } else{
+        printf("LOGINS AFTER\n______________________________________\n");
+        delete_block(authenticated_user);
+        printf("\n______________________________________\n");
+      }
+    }
 }

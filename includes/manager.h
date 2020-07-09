@@ -6,10 +6,13 @@
 #include <stdlib.h>
 #include "list.h"
 #include "models.h"
+#include "login.h"
+#include "helper.h"
 
-void manager_menu(List *node);
+void manager_menu();
 void creat_new_account();
 void new_account(char *role);
 void new_client_data(char *name, char *matricula);
+void delete_account(char *matricula, char *role);
 
 #endif

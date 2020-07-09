@@ -54,7 +54,7 @@ int main(){
       }
     }
   }
-//  print_list_of_clients(list);
+ print_list_of_clients(list);
   rewind(accounts);
   fclose(accounts);
  printf("\n______________________________________________________________________\n");

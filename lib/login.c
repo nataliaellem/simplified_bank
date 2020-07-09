@@ -197,7 +197,7 @@ void print_list_logins(List *list){
   }
 }
 
-List* new_user_block(List *list, User *user){
+List* new_block(List *list, User *user){
   List *new_block = new_node();
   new_block->data->user = (User*) malloc(sizeof(User));
   char *name = get_user_name(user);
@@ -209,17 +209,7 @@ List* new_user_block(List *list, User *user){
   set_user_matricula(new_block->data->user, matricula);
   set_user_password(new_block->data->user, password);
   set_user_role(new_block->data->user, role);
-  if (list == NULL){
-    new_block->prev = (List*) NULL;
-    new_block->next = (List*) NULL;
-    list = new_block;
-  } else {
-    List *aux;
-    for (aux = list; aux->next != NULL; aux = aux->next);
-    new_block->prev = aux;
-    new_block->next = (List*) NULL;
-    aux->next = new_block;
-  }
+  new_linked_block(list, new_block);
   return list;
 }
 
@@ -233,7 +223,7 @@ List* filter_logins(List *list, char* (*block)(User*), char *attribute, int *len
     char *role = (*block)(aux->data->user);
     if (strcmp(role, attribute) == 0){
       *length = *length + 1;
-      filtered_list = new_user_block(filtered_list, aux->data->user);
+      filtered_list = new_block(filtered_list, aux->data->user);
     }
   }
   return filtered_list;

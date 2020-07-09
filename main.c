@@ -29,9 +29,10 @@ int main(){
   // List *filtered_list = filter_logins(logins_list, get_user_role, role, length);
   // print_list_logins(filtered_list);
 //  home_page();
-char client[] = "client";
-char manager[] = "manager";
-new_account(client);
+// char client[] = "client";
+// char manager[] = "manager";
+// new_account(client);
 
+manager_menu();
 return 0;
 }
