@@ -25,7 +25,6 @@ List* login(char *authenticated_role){
       case 1:
         system("clear");
         printf("Type your matriculation: ");
-        __fpurge(stdin);
         matricula = reading();
         printf("\n");
         int *length = (int*) malloc(sizeof(int));
@@ -44,7 +43,6 @@ List* login(char *authenticated_role){
         } else {
             k = 0;
             printf("Type your password: ");
-            __fpurge(stdin);
             password = reading();
             printf("\n");
             char *comparative_password = get_user_password(authenticated_user->data->user);
@@ -59,7 +57,6 @@ List* login(char *authenticated_role){
       case 2:
         system("clear");
         printf("Type your matriculation: ");
-        __fpurge(stdin);
         matricula = reading();
         printf("\n");
         int *length2 = (int*) malloc(sizeof(int));
@@ -78,7 +75,6 @@ List* login(char *authenticated_role){
         } else {
             k = 0;
             printf("Type your password: ");
-            __fpurge(stdin);
             password = reading();
             printf("\n");
             char *comparative_password = get_user_password(authenticated_user->data->user);

@@ -13,7 +13,6 @@ void delete_block(List *list, int position){
         aux->next->prev = NULL;
         list = aux->next;
       } else if (aux->next == NULL){
-        printf(" NEXT : %x\n", aux->next);
           aux->prev->next = NULL;
       } else {
         aux->prev->next = aux->next;

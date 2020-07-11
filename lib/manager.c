@@ -14,7 +14,7 @@ void manager_menu(){
     printf("\t(6) List total bank reserves\n");
     printf("\t(7) Exit the manager menu\n\n");
     printf("Choose one: ");
-    scanf("%d", &option);
+    scanf(" %d", &option);
     printf("\n");
     int n = 1;
     switch (option) {
@@ -180,9 +180,7 @@ void new_client_data(char *name, char *matricula){
 }
 
 void delete_account(char *matricula, char *role){
-    char manager[] = "manager";
-    char client[] = "client";
-    if (strcmp(manager, role) == 0){
+      char client[] = "client";
       FILE *file = fopen("storage/login.csv", "r");
       int file_lines = 0;
       for (char c = getc(file); c != EOF; c = getc(file)){
@@ -237,5 +235,13 @@ void delete_account(char *matricula, char *role){
         print_list_logins(logins);
         printf("\n______________________________________\n");
       }
+      if (strcmp(client, role) == 0){
+        FILE *accounts = fopen("storage/accounts.csv", "r");
+        int accounts_lines = 0;
+        for (char c = getc(accounts); c != EOF; c = getc(accounts)){
+          if (c == '\n'){
+            accounts_lines++;
+          }
+        }
     }
 }
