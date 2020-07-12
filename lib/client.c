@@ -1,5 +1,9 @@
 #include "../includes/client.h"
 
+void client_menu(List *node){
+  printf("\n\n");
+}
+
 void new_client(Client *client){
   client->name = (char*) malloc(50 * sizeof(char));
   client->matricula = (char*) malloc(20 * sizeof(char));
@@ -39,7 +43,7 @@ List* create_list_accounts(FILE *file, int file_lines){
     // printf("third COLUMN: %f\n", third_column);
     // printf("Fourth COLUMN: %f\n", fourth_column);
     List *new_block = (List*) malloc(sizeof(List));
-    new_block->data = malloc(sizeof(Client)); //YOU HAVE TO MALLOC THE DATA UNION AND THE CLIENT STRUCT THAT IS INSIDE DATA 
+    new_block->data = malloc(sizeof(Client)); //YOU HAVE TO MALLOC THE DATA UNION AND THE CLIENT STRUCT THAT IS INSIDE DATA
     new_block->data->client = malloc(sizeof(Client));
     new_client(new_block->data->client);
     set_client_name(new_block->data->client, first_column);
@@ -76,8 +80,4 @@ void print_list_of_clients(List *list){
     printf("TRANSFER LIMIT OF CLIENT %d: %.2f\n", i, aux->data->client->transfer_limit);
     printf("\n");
 	}
-}
-
-void client_menu(List *node){
-  printf("\n\n");
 }
