@@ -12,7 +12,8 @@ void manager_menu(){
     printf("\t(4) List customers alphabetically\n");
     printf("\t(5) List customers by registration date\n");
     printf("\t(6) List total bank reserves\n");
-    printf("\t(7) Exit the manager menu\n\n");
+    printf("\t(7) Clear database\n");
+    printf("\t(8) Exit the manager menu\n\n");
     printf("Choose one: ");
     scanf(" %d", &option);
     printf("\n");
@@ -24,6 +25,9 @@ void manager_menu(){
         break;
       case 2:
         system("clear");
+        printf("Enter the registration number of the account you want to delete: ");
+        char *matricula = (char*) malloc(50 * sizeof(char));
+        scanf("%s", matricula);
         while (n){
           printf("Do you want to delete a (1)manager or a (2)client account?\nChoose one: ");
           int opt;
@@ -31,9 +35,6 @@ void manager_menu(){
           printf("\n");
           char manager[] = "manager";
           char client[] = "client";
-          printf("Enter the registration number of the account you want to delete: ");
-          char *matricula = reading();
-          printf("\n");
           switch(opt){
             case 1:
               delete_account(matricula, manager);
@@ -63,6 +64,10 @@ void manager_menu(){
         system("clear");
         break;
       case 7:
+        system("clear");
+        clear_database();
+        break;
+      case 8:
         k = 0;
         break;
       default:
@@ -180,68 +185,152 @@ void new_client_data(char *name, char *matricula){
 }
 
 void delete_account(char *matricula, char *role){
-      char client[] = "client";
-      FILE *file = fopen("storage/login.csv", "r");
-      int file_lines = 0;
-      for (char c = getc(file); c != EOF; c = getc(file)){
-        if (c == '\n'){
-          file_lines++;
-        }
-      }
-      List *logins = create_list_logins(file, file_lines);
-      rewind(file);
-      fclose(file);
-      List *aux;
-      List *authenticated_user = NULL;
-      for (aux = logins; aux != NULL; aux = aux->next){
-        if (strcmp(aux->data->user->matricula, matricula) == 0){
-          authenticated_user = aux;
-          printf("Are you sure you want to delete %s's account?\n(y)Yes\n(n)No\nChoose one: ", authenticated_user->data->user->name);
-          char op;
-          scanf("%c", &op);
-          switch(op){
-            case 'y':
-              printf("\n");
-              printf("Deleted account.\n");
-              break;
-            case 'n':
-              printf("Account not deleted.\n");
-              return;
-            default:
-              printf("Invalid option. Try again.\n");
-              return;
-              break;
-          }
-        }
-      }
-      if (authenticated_user == NULL){
-        printf("Invalid matriculation, try again.\n");
-        return;
-      } else{
-        char *aut_matricula = get_user_matricula(authenticated_user->data->user);
-        List *aux2;
-        int count = 0;
-        int position;
-        for (aux2 = logins; aux2 != NULL; aux2 = aux2->next){
-          count++;
-          char *aux_matricula = get_user_matricula(aux2->data->user);
-          if (strcmp(aut_matricula, aux_matricula) == 0){
-            position = count;
-            break;
-          }
-        }
-        delete_block(logins, position);
-        printf("LOGINS AFTER\n______________________________________\n");
-        print_list_logins(logins);
-        printf("\n______________________________________\n");
-      }
-      if (strcmp(client, role) == 0){
-        FILE *accounts = fopen("storage/accounts.csv", "r");
-        int accounts_lines = 0;
-        for (char c = getc(accounts); c != EOF; c = getc(accounts)){
-          if (c == '\n'){
-            accounts_lines++;
-          }
-        }
+  char client[] = "client";
+  FILE *file = fopen("storage/login.csv", "r");
+  int file_lines = 0;
+  for (char c = getc(file); c != EOF; c = getc(file)){
+    if (c == '\n'){
+      file_lines++;
     }
+  }
+  rewind(file);
+  int line;
+  int i = 1;
+  int n_char_first_col = 0;
+  int n_char_sec_col = 0;
+  int n_char_third_col = 0;
+  int n_char_fourth_col = 0;
+  char *authenticated_matricula = (char*) malloc(20 * sizeof(char));
+  char *name = (char*) malloc(50 * sizeof(char));
+  while(i < file_lines+1){
+    char *first_column = calloc(50, sizeof(char));
+    char *second_column = calloc(50, sizeof(char));
+    char *third_column = calloc(50, sizeof(char));
+    char *fourth_column = calloc(50, sizeof(char));
+    fscanf(file, "%[^,],%[^,],%[^,],%[^,],\n", first_column, second_column, third_column, fourth_column);
+    if (strcmp(second_column, matricula) == 0){
+      strcpy(authenticated_matricula, matricula);
+      strcpy(name, first_column);
+      line = i;
+      for (int j = 1; j<51; j++){
+          if (first_column[j] == 0 && n_char_first_col == 0){
+            n_char_first_col = j;
+
+          }
+          if (second_column[j] == 0 && n_char_sec_col == 0){
+            n_char_sec_col = j;
+          }
+          if (third_column[j] == 0 && n_char_third_col == 0){
+            n_char_third_col = j;
+          }
+          if (fourth_column[j] == 0 && n_char_fourth_col == 0){
+            n_char_fourth_col = j;
+          }
+      }
+    }
+    free(first_column);
+    free(second_column);
+    free(third_column);
+    free(fourth_column);
+    i++;
+}
+  if (authenticated_matricula == NULL){
+    printf("Invalid matriculation, try again.\n");
+    return;
+}
+  rewind(file);
+
+  printf("Are you sure you want to delete %s's account?\n(y)Yes\n(n)No\nChoose one: ", name);
+  char op;
+  __fpurge(stdin);
+  scanf("%c", &op);
+  switch(op){
+      case 'y':
+        printf("\n");
+        int n_char_file = 0;
+        for (int n = 1; n < line; n++){
+          n_char_file++;
+          for (char ch = getc(file); ch != '\n'; ch = getc(file)){
+            n_char_file++;
+          }
+        }
+        rewind(file);
+        fclose(file);
+        file = fopen("storage/login.csv", "r+");
+        fseek(file, n_char_file, SEEK_SET);
+        for (int k = 0; k < n_char_first_col; k++){
+          fprintf(file, "!");
+        }
+        fprintf(file, ",");
+        for (int k = 0; k < n_char_sec_col; k++){
+          fprintf(file, "!");
+        }
+        fprintf(file, ",");
+        for (int k = 0; k < n_char_third_col; k++){
+          fprintf(file, "!");
+        }
+        fprintf(file, ",");
+        for (int k = 0; k < n_char_fourth_col; k++){
+          fprintf(file, "!");
+        }
+        fprintf(file, ",");
+        rewind(file);
+        fclose(file);
+        printf("Deleted account.\n");
+        break;
+      case 'n':
+        printf("Account not deleted.\n");
+        rewind(file);
+        fclose(file);
+        return;
+      default:
+        printf("Invalid option. Try again.\n");
+        return;
+        break;
+    }
+
+    if (strcmp(client, role) == 0){
+          FILE *accounts = fopen("storage/accounts.csv", "r");
+          int accounts_lines = 0;
+          for (char c = getc(accounts); c != EOF; c = getc(accounts)){
+            if (c == '\n'){
+              accounts_lines++;
+            }
+          }
+      }
+  }
+
+void clear_database(){
+  FILE *file = fopen("storage/login.csv", "r");
+  int file_lines = 0;
+  for (char c = getc(file); c != EOF; c = getc(file)){
+    if (c == '\n'){
+      file_lines++;
+    }
+  }
+  List *logins = create_list_logins(file, file_lines);
+  rewind(file);
+  fclose(file);
+  List *aux;
+  int position;
+  int count = 0;
+  for (aux = logins; aux != NULL; aux = aux->next){
+    count++;
+    if (aux->data->user->matricula[0] == '!'){
+      position = count;
+      delete_block(logins, position);
+    }
+  }
+  file = fopen("storage/login.csv", "w");
+  List *aux2;
+  for (aux2 = logins; aux2 != NULL; aux2 = aux2->next){
+      fprintf(file, "%s,", aux2->data->user->name);
+      fprintf(file, "%s,", aux2->data->user->matricula);
+      fprintf(file, "%s,", aux2->data->user->password);
+      fprintf(file, "%s,", aux2->data->user->role);
+      fprintf(file, "\n");
+  }
+  rewind(file);
+  fclose(file);
+  printf("Clean database.\n");
 }
