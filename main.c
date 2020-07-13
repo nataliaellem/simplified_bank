@@ -11,6 +11,6 @@
 
 
 int main(){
-  manager_menu();
+  clear_database();
 return 0;
 }

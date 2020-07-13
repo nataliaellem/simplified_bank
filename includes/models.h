@@ -17,6 +17,8 @@ typedef struct client {
   char *matricula;
   float balance;
   float transfer_limit;
+  char *char_balance;
+  char *char_transfer_limit;
 } Client;
 
 typedef struct manager{
