@@ -15,7 +15,7 @@ void manager_menu(){
     printf("\t(7) Clear database\n");
     printf("\t(8) Exit the manager menu\n\n");
     printf("Choose one: ");
-    scanf(" %d", &option);
+    scanf("%d", &option);
     printf("\n");
     int n = 1;
     switch (option) {
@@ -53,6 +53,7 @@ void manager_menu(){
         break;
       case 3:
         system("clear");
+        change_transfer_limit();
         break;
       case 4:
         system("clear");
@@ -372,6 +373,99 @@ void delete_client_account(char *matricula){
   fprintf(file, ",");
   rewind(file);
   fclose(file);
+}
+
+void change_transfer_limit(){
+  printf("Type the matriculation of the account you want to modify the transfer limit: ");
+  char *matricula = reading();
+  float new_limit;
+  printf("\nType the new transfer limit: ");
+  scanf("%f", &new_limit);
+  printf("\n");
+  FILE *file = fopen("storage/accounts.csv", "r");
+  int file_lines = 0;
+  for (char c = getc(file); c != EOF; c = getc(file)){
+    if (c == '\n'){
+      file_lines++;
+    }
+  }
+  rewind(file);
+  int n_char_first_col = 0;
+  int n_char_sec_col = 0;
+  int n_char_third_col = 0;
+  int n_char_fourth_col = 0;
+  int line;
+  int i = 1;
+  char *authenticated_matricula = (char*) malloc(20 * sizeof(char));
+  char *name = (char*) malloc(50 * sizeof(char));
+  char *balance = (char*) malloc(50 * sizeof(char));
+  char *transfer_limit = (char*) malloc(50 * sizeof(char));
+  while(i < file_lines+1){
+    char *first_column = calloc(50, sizeof(char));
+    char *second_column = calloc(50, sizeof(char));
+    char *third_column = calloc(50, sizeof(char));
+    char *fourth_column = calloc(50, sizeof(char));
+    fscanf(file, "%[^,],%[^,],%[^,],%[^,],\n", first_column, second_column, third_column, fourth_column);
+    if (strcmp(second_column, matricula) == 0){
+      strcpy(authenticated_matricula, matricula);
+      strcpy(name, first_column);
+      strcpy(balance, third_column);
+      strcpy(transfer_limit, fourth_column);
+      line = i;
+      for (int j = 1; j<51; j++){
+          if (first_column[j] == 0 && n_char_first_col == 0){
+            n_char_first_col = j;
+          }
+          if (second_column[j] == 0 && n_char_sec_col == 0){
+            n_char_sec_col = j;
+          }
+          if (third_column[j] == 0 && n_char_third_col == 0){
+            n_char_third_col = j;
+          }
+          if (fourth_column[j] == 0 && n_char_fourth_col == 0){
+            n_char_fourth_col = j;
+          }
+      }
+    }
+    free(first_column);
+    free(second_column);
+    free(third_column);
+    free(fourth_column);
+    i++;
+  }
+  rewind(file);
+  fclose(file);
+  file = fopen("storage/accounts.csv", "r+");
+  int offset = 0;
+  for (int n = 1; n < line; n++){
+    offset++;
+    for (char ch = getc(file); ch != '\n'; ch = getc(file)){
+      offset++;
+    }
+  }
+  fseek(file, offset, SEEK_SET);for (int k = 0; k < n_char_first_col; k++){
+    fprintf(file, "!");
+  }
+  fprintf(file, ",");
+  for (int l = 0; l < n_char_sec_col; l++){
+    fprintf(file, "!");
+  }
+  fprintf(file, ",");
+  for (int m = 0; m < n_char_third_col; m++){
+    fprintf(file, "!");
+  }
+  fprintf(file, ",");
+  for (int n = 0; n < n_char_fourth_col; n++){
+    fprintf(file, "!");
+  }
+  fprintf(file, ",");
+  rewind(file);
+  fclose(file);
+  file = fopen("storage/accounts.csv", "a");
+  fprintf(file, "%s,%s,%s,%.2f,\n", name, matricula, balance, new_limit);
+  rewind(file);
+  fclose(file);
+  printf("Updated transfer limit.\n");
 }
 
 void clear_database(){
