@@ -11,7 +11,7 @@
 
 
 int main(){
-  manager_menu();
+manager_menu();
   // char matricula[] = "20202";
   // float new_limit = 12000.99;
   // FILE *file = fopen("tests/test_accounts.csv", "r");
