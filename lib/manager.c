@@ -505,6 +505,8 @@ void bank_reserve(){
     printf("Reserve of client %d: %.2f\n", j+1, reserves[j]);
   }
   printf("Total bank reserves: %.2f\n", total_reserves);
+  rewind(file);
+  fclose(file);
 }
 
 void clear_database(){
