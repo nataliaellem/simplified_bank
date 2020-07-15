@@ -4,6 +4,26 @@ void client_menu(List *node){
   node->data->client = malloc(sizeof(Client));
   new_client(node->data->client);
   char *matricula = get_user_matricula(node->data->user);
+  int k =1;
+  int option;
+  while (k){
+    printf("\nCLIENT MENU\n\nWhat option do you want to execute? \n\n");
+    printf("\t(1) View balance\n");
+    printf("\t(2) Deposit value\n");
+    printf("\t(3) Remove value\n");
+    printf("\t(4) Make transfer\n");
+    printf("\t(5) View registration date\n");
+    printf("\t(6) View transfer limit\n");
+    printf("\t(7) View extract\n");
+    printf("Choose one: ");
+    scanf("%d", &option);
+    printf("\n");
+    switch(option){
+      case 1:
+        system("clear");
+        //view_balance();
+    }
+  }
 }
 
 void new_client(Client *client){

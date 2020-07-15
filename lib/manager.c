@@ -37,6 +37,7 @@ void manager_menu(){
         break;
       case 4:
         system("clear");
+        list_accounts_alphabetically();
         break;
       case 5:
         system("clear");
@@ -88,7 +89,7 @@ void creat_new_account(){
 }
 
 void new_account(char *role){
-  size_t digits;
+  int digits;
   char manager[] = "manager";
   char client[] = "client";
   if (strcmp(role, manager) == 0){
@@ -104,10 +105,11 @@ void new_account(char *role){
   printf("Type the name of the new %s: ", role);
   char *name = reading();
   int k = 1;
-  char *password;
+  char *password = malloc(50 * sizeof(char));
   while(k){
-    printf("\nType the new password of at least %zu digits: ", digits);
-    password = reading();
+    printf("\nType the new password of at least %d digits: ", digits);
+    scanf("%s", password);
+    printf("\n");
     if (strlen(password) >= digits){
       char *confirm_pass;
       printf("Confirm new password: ");
@@ -119,7 +121,7 @@ void new_account(char *role){
         printf("Password checking doesn't match. Try again.\n\n");
       }
     } else {
-      printf("Password is less than %zu digits, try again.\n\n", digits);
+      printf("Password is less than %d digits, try again.\n\n", digits);
     }
   }
   int new_matriculation;
@@ -459,6 +461,7 @@ void list_accounts_alphabetically(){
       file_lines++;
     }
   }
+  rewind(file);
   List *list = create_list_accounts(file, file_lines);
   rewind(file);
   fclose(file);
@@ -474,10 +477,10 @@ void list_accounts_alphabetically(){
     strcpy(names[i], name);
     i++;
   }
+  char **new_names = list_alphabetically(names, file_lines);
   for (i = 0; i < file_lines; i++){
-    printf("%s\n", names[i]);
+    printf("%s\n", new_names[i]);
   }
-  list_alphabetically(names, file_lines);
 }
 
 void bank_reserve(){
@@ -494,19 +497,18 @@ void bank_reserve(){
   for (int i = 0; i < file_lines; i++){
     if (aux != NULL){
       float balance = get_client_balance(aux->data->client);
-      printf("NAME: %s\n", aux->data->client->name);
       reserves[i] = balance;
       aux = aux->next;
     }
   }
-  float total_reserves;
+  float total_reserves = 0;
   for (int j = 0; j < file_lines; j++){
     total_reserves = total_reserves + reserves[j];
     printf("Reserve of client %d: %.2f\n", j+1, reserves[j]);
   }
-  printf("Total bank reserves: %.2f\n", total_reserves);
   rewind(file);
   fclose(file);
+  printf("Total bank reserves: %.2f\n", total_reserves);
 }
 
 void clear_database(){
