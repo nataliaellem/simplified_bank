@@ -19,6 +19,7 @@ typedef struct client {
   float transfer_limit;
   char *char_balance;
   char *char_transfer_limit;
+  char *reg_date;
 } Client;
 
 typedef struct manager{

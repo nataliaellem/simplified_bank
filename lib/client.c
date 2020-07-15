@@ -31,6 +31,7 @@ void new_client(Client *client){
   client->matricula = (char*) malloc(20 * sizeof(char));
   client->char_balance = (char*) malloc(50 * sizeof(char));
   client->char_transfer_limit = (char*) malloc(50 * sizeof(char));
+  client->reg_date = (char*) malloc(14 * sizeof(char));
 }
 
 char* get_client_name(Client *node){
@@ -51,6 +52,12 @@ float get_client_balance(Client *node){
 float get_client_transfer_limit(Client *node){
   float transfer_limit = node->transfer_limit;
   return transfer_limit;
+}
+
+char* get_reg_date(Client *node){
+  char *reg_date = (char*) malloc(14 * sizeof(char));
+  strcpy(reg_date, node->reg_date);
+  return reg_date;
 }
 
 void set_client_name(Client *node, char *name){
@@ -77,6 +84,10 @@ void set_client_char_transfer_limit(Client *node, char *transfer_limit){
   strcpy(node->char_transfer_limit, transfer_limit);
 }
 
+void set_client_reg_date(Client *node, char *date){
+  strcpy(node->reg_date, date);
+}
+
 List* create_list_accounts(FILE *file, int file_lines){
   List *list = (List*) NULL;
   if (file == NULL){
@@ -84,12 +95,12 @@ List* create_list_accounts(FILE *file, int file_lines){
     return list;
   }
   rewind(file);
-  char first_column[50], second_column[50];
+  char first_column[50], second_column[50], fifth_column[14];
   float third_column;
   float fourth_column;
   int i = 0;
   while(i < file_lines){
-    fscanf(file, "%[^,],%[^,],%f,%f,\n", first_column, second_column, &third_column, &fourth_column);
+    fscanf(file, "%[^,],%[^,],%f,%f,%[^,],\n", first_column, second_column, &third_column, &fourth_column, fifth_column);
     List *new_block = (List*) malloc(sizeof(List));
     new_block->data = malloc(sizeof(Client)); //YOU HAVE TO MALLOC THE DATA UNION AND THE CLIENT STRUCT THAT IS INSIDE DATA
     new_block->data->client = malloc(sizeof(Client));
@@ -98,6 +109,7 @@ List* create_list_accounts(FILE *file, int file_lines){
     set_client_matricula(new_block->data->client, second_column);
     set_client_balance(new_block->data->client, third_column);
     set_client_transfer_limit(new_block->data->client, fourth_column);
+    set_client_reg_date(new_block->data->client, fifth_column);
     List *aux;
     if (list == NULL){
       new_block->prev = (List*) NULL;
@@ -124,10 +136,10 @@ List* create_list_char(FILE *file, int file_lines){
     return list;
   }
   rewind(file);
-  char first_column[50], second_column[50], third_column[50], fourth_column[50];
+  char first_column[50], second_column[50], third_column[50], fourth_column[50], fifth_column[14];
   int i = 0;
   while(i < file_lines){
-    fscanf(file, "%[^,],%[^,],%[^,],%[^,],\n", first_column, second_column, third_column, fourth_column);
+    fscanf(file, "%[^,],%[^,],%[^,],%[^,],%[^,],\n", first_column, second_column, third_column, fourth_column, fifth_column);
     List *new_block = (List*) malloc(sizeof(List));
     new_block->data = malloc(sizeof(Client));
     new_block->data->client = malloc(sizeof(Client));
@@ -136,6 +148,7 @@ List* create_list_char(FILE *file, int file_lines){
     set_client_matricula(new_block->data->client, second_column);
     set_client_char_balance(new_block->data->client, third_column);
     set_client_char_transfer_limit(new_block->data->client, fourth_column);
+    set_client_reg_date(new_block->data->client, fifth_column);
     List *aux;
     if (list == NULL){
       new_block->prev = (List*) NULL;
@@ -163,6 +176,7 @@ void print_list_of_clients(List *list){
     printf("MATRICULA OF CLIENT %d: %s\n", i, aux->data->client->matricula);
     printf("BALANCE OF CLIENT %d: %.2f\n", i, aux->data->client->balance);
     printf("TRANSFER LIMIT OF CLIENT %d: %.2f\n", i, aux->data->client->transfer_limit);
+    printf("REGISTRATION DATE OF CLIENT %d: %s\n", i, aux->data->client->reg_date);
     printf("\n");
 	}
 }
@@ -176,6 +190,7 @@ void print_char_list(List *list){
     printf("MATRICULA OF CLIENT %d: %s\n", i, aux->data->client->matricula);
     printf("BALANCE OF CLIENT %d: %s\n", i, aux->data->client->char_balance);
     printf("TRANSFER LIMIT OF CLIENT %d: %s\n", i, aux->data->client->char_transfer_limit);
+    printf("REGISTRATION DATE OF CLIENT %d: %s\n", i, aux->data->client->reg_date);
     printf("\n");
   }
 }

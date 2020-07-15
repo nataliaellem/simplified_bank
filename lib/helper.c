@@ -31,3 +31,38 @@ char** list_alphabetically(char **list, int size_list){
   }
   return list;
 }
+
+int number_of_file_lines(FILE *file){
+  int file_lines = 0;
+  for (char c = getc(file); c != EOF; c = getc(file)){
+    if (c == '\n'){
+      file_lines++;
+    }
+  }
+  return file_lines;
+}
+
+
+int date_day(){
+  struct tm *data_hora_atual;
+  time_t segundos;
+  time(&segundos);
+  data_hora_atual = localtime(&segundos);
+  return data_hora_atual->tm_mday;
+}
+
+int date_month(){
+  struct tm *data_hora_atual;
+  time_t segundos;
+  time(&segundos);
+  data_hora_atual = localtime(&segundos);
+  return data_hora_atual->tm_mon+1;
+}
+
+int date_year(){
+  struct tm *data_hora_atual;
+  time_t segundos;
+  time(&segundos);
+  data_hora_atual = localtime(&segundos);
+  return data_hora_atual->tm_year + 1900;
+}
