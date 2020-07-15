@@ -41,6 +41,7 @@ void manager_menu(){
         break;
       case 5:
         system("clear");
+        list_by_reg_date();
         break;
       case 6:
         system("clear");
@@ -486,6 +487,34 @@ void list_accounts_alphabetically(){
   char **new_names = list_alphabetically(names, file_lines);
   for (i = 0; i < file_lines; i++){
     printf("%s\n", new_names[i]);
+  }
+}
+
+void list_by_reg_date(){
+  FILE *file = fopen("storage/accounts.csv", "r");
+  int file_lines = number_of_file_lines(file);
+  rewind(file);
+  List *list = create_list_accounts(file, file_lines);
+  rewind(file);
+  fclose(file);
+  char **dates = (char**) calloc(file_lines, sizeof(char*));
+  char **names = (char**) calloc(file_lines, sizeof(char*));
+  int i;
+  for (i = 0; i < file_lines; i++){
+    dates[i] = (char*) calloc(50, sizeof(char));
+    names[i] = (char*) calloc(50, sizeof(char));
+  }
+  List *aux;
+  i = 0;
+  for (aux = list; aux != NULL; aux = aux->next){
+    char *date = get_reg_date(aux->data->client);
+    char *name = get_client_name(aux->data->client);
+    strcpy(dates[i], date);
+    strcpy(names[i], name);
+    i++;
+  }
+  for (i = 0; i < file_lines; i++){
+    printf("%s's registration date --> %s\n", names[i], dates[i]);
   }
 }
 

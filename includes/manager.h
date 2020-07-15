@@ -18,6 +18,7 @@ void delete_account(char *matricula);
 void delete_client_account(char *matricula);
 void change_transfer_limit();
 void list_accounts_alphabetically();
+void list_by_reg_date();
 void bank_reserve();
 void clear_database();
 
