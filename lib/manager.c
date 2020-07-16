@@ -168,10 +168,10 @@ void new_client_data(char *name, char *matricula){
   float transfer_limit;
   scanf("%f", &transfer_limit);
   FILE *file = fopen("storage/accounts.csv", "a");
-  if (day/10 < 1){
+  if (day/10 < 1 && month/10 >= 1){
     fprintf(file, "%s,%s,%.2f,%.2f,0%d/%d/%d,\n", name, matricula, balance, transfer_limit, day, month, year);
   }
-  else if (month/10 < 1){
+  else if (month/10 < 1 && day/10 >= 1){
     fprintf(file, "%s,%s,%.2f,%.2f,%d/0%d/%d,\n", name, matricula, balance, transfer_limit, day, month, year);
   }
   else if (day/10 < 1 && month/10 < 1){
@@ -494,6 +494,8 @@ void list_accounts_alphabetically(){
     strcpy(names[i], name);
     i++;
   }
+  system("clear");
+  printf("LIST OF CUSTOMERS IN ALFABETICAL ORDER\n\n");
   char **new_names = sort_list(names, file_lines);
   for (i = 0; i < file_lines; i++){
     printf("%s\n", new_names[i]);
@@ -507,26 +509,55 @@ void list_by_reg_date(){
   List *list = create_list_accounts(file, file_lines);
   rewind(file);
   fclose(file);
-  char **dates = (char**) calloc(file_lines, sizeof(char*));
-  char **names = (char**) calloc(file_lines, sizeof(char*));
-  int i;
-  for (i = 0; i < file_lines; i++){
-    dates[i] = (char*) calloc(50, sizeof(char));
-    names[i] = (char*) calloc(50, sizeof(char));
-  }
+  List *new_list = sort_linked_list_by_date(list);
   List *aux;
-  i = 0;
-  for (aux = list; aux != NULL; aux = aux->next){
-    char *date = get_reg_date(aux->data->client);
-    char *name = get_client_name(aux->data->client);
-    strcpy(dates[i], date);
-    strcpy(names[i], name);
-    i++;
+  system("clear");
+  printf("LIST OF CLIENTS BY REGISTRATION DATE\n\n");
+  for (aux = new_list; aux != NULL; aux = aux->next){
+    printf("%s --> %s\n", aux->data->client->name, aux->data->client->reg_date);
   }
-  char **new_dates = sort_list(dates, file_lines);
-  for (i = 0; i < file_lines; i++){
-    printf("Registration date --> %s\n", new_dates[i]);
-  }
+}
+
+
+List* sort_linked_list_by_date(List *list){
+  List *i, *j;
+  char *higher_date = malloc(50 * sizeof(char));
+  char *name = malloc(50 * sizeof(char));
+  char *matricula = malloc(50 * sizeof(char));
+  float balance;
+  float limit;
+  for (i=list; i!=NULL; i=i->next){
+		for (j=i; j!=NULL; j=j->next){
+      char *date_i = get_reg_date(i->data->client);
+      char *date_j = get_reg_date(j->data->client);
+      char *name_i = get_client_name(i->data->client);
+      char *name_j = get_client_name(j->data->client);
+      char *matricula_i = get_client_matricula(i->data->client);
+      char *matricula_j = get_client_matricula(j->data->client);
+      float balance_i = get_client_balance(i->data->client);
+      float balance_j = get_client_balance(j->data->client);
+      float limit_i = get_client_transfer_limit(i->data->client);
+      float limit_j = get_client_transfer_limit(j->data->client);
+ 			if (strcmp(date_i, date_j) > 0){
+				strcpy(higher_date, date_i);
+				strcpy(i->data->client->reg_date, date_j);
+				strcpy(j->data->client->reg_date, higher_date);
+        strcpy(name, name_i);
+        strcpy(i->data->client->name, name_j);
+        strcpy(j->data->client->name, name);
+        strcpy(matricula, matricula_i);
+        strcpy(i->data->client->matricula, matricula_j);
+        strcpy(j->data->client->matricula, matricula);
+        balance = balance_i;
+        i->data->client->balance = balance_j;
+        j->data->client->balance = balance;
+        limit = limit_i;
+        i->data->client->transfer_limit = limit_j;
+        j->data->client->transfer_limit = limit;
+      }
+		}
+	}
+  return list;
 }
 
 void bank_reserve(){
