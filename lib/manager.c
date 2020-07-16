@@ -168,7 +168,17 @@ void new_client_data(char *name, char *matricula){
   float transfer_limit;
   scanf("%f", &transfer_limit);
   FILE *file = fopen("storage/accounts.csv", "a");
-  fprintf(file, "%s,%s,%.2f,%.2f,%d/%d/%d,\n", name, matricula, balance, transfer_limit, day, month, year);
+  if (day/10 < 1){
+    fprintf(file, "%s,%s,%.2f,%.2f,0%d/%d/%d,\n", name, matricula, balance, transfer_limit, day, month, year);
+  }
+  else if (month/10 < 1){
+    fprintf(file, "%s,%s,%.2f,%.2f,%d/0%d/%d,\n", name, matricula, balance, transfer_limit, day, month, year);
+  }
+  else if (day/10 < 1 && month/10 < 1){
+    fprintf(file, "%s,%s,%.2f,%.2f,0%d/0%d/%d,\n", name, matricula, balance, transfer_limit, day, month, year);
+  } else {
+    fprintf(file, "%s,%s,%.2f,%.2f,%d/%d/%d,\n", name, matricula, balance, transfer_limit, day, month, year);
+  }
   fclose(file);
   printf("New account created.\n");
 }
@@ -484,7 +494,7 @@ void list_accounts_alphabetically(){
     strcpy(names[i], name);
     i++;
   }
-  char **new_names = list_alphabetically(names, file_lines);
+  char **new_names = sort_list(names, file_lines);
   for (i = 0; i < file_lines; i++){
     printf("%s\n", new_names[i]);
   }
@@ -513,8 +523,9 @@ void list_by_reg_date(){
     strcpy(names[i], name);
     i++;
   }
+  char **new_dates = sort_list(dates, file_lines);
   for (i = 0; i < file_lines; i++){
-    printf("%s's registration date --> %s\n", names[i], dates[i]);
+    printf("Registration date --> %s\n", new_dates[i]);
   }
 }
 

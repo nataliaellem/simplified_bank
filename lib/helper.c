@@ -17,7 +17,7 @@ char* reading(){
   return information;
 }
 
-char** list_alphabetically(char **list, int size_list){
+char** sort_list(char **list, int size_list){
   int i, j;
   char *higher = malloc(50 * sizeof(char));
   for (i = 0; i < size_list; i++){
