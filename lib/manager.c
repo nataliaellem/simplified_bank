@@ -4,6 +4,7 @@ void manager_menu(){
   int k = 1;
   int option;
   while (k){
+    system("clear");
     printf("\nMANAGER MENU\n\n");
     printf("What option do you want to execute? \n\n");
     printf("\t(1) Create new account\n");
@@ -22,6 +23,9 @@ void manager_menu(){
       case 1:
         system("clear");
         creat_new_account();
+        printf("\nType enter to return to the manager menu.");
+        __fpurge(stdin);
+        getc(stdin);
         break;
       case 2:
         system("clear");
@@ -30,32 +34,53 @@ void manager_menu(){
         scanf("%s", matricula);
         delete_account(matricula);
         printf("\n");
+        printf("\nType enter to return to the manager menu.");
+        __fpurge(stdin);
+        getc(stdin);
         break;
       case 3:
         system("clear");
         change_transfer_limit();
+        printf("\nType enter to return to the manager menu.");
+        __fpurge(stdin);
+        getc(stdin);
         break;
       case 4:
         system("clear");
         list_accounts_alphabetically();
+        printf("\nType enter to return to the manager menu.");
+        __fpurge(stdin);
+        getc(stdin);
         break;
       case 5:
         system("clear");
         list_by_reg_date();
+        printf("\nType enter to return to the manager menu.");
+        __fpurge(stdin);
+        getc(stdin);
         break;
       case 6:
         system("clear");
         bank_reserve();
+        printf("\nType enter to return to the manager menu.");
+        __fpurge(stdin);
+        getc(stdin);
         break;
       case 7:
         system("clear");
         clear_database();
+        printf("\nType enter to return to the manager menu.");
+        __fpurge(stdin);
+        getc(stdin);
         break;
       case 8:
         k = 0;
         break;
       default:
         printf("\nInvalid option, try again.\n");
+        printf("\nType enter to return to the manager menu.");
+        __fpurge(stdin);
+        getc(stdin);
         break;
     }
   }
@@ -500,6 +525,7 @@ void list_accounts_alphabetically(){
   for (i = 0; i < file_lines; i++){
     printf("%s\n", new_names[i]);
   }
+  printf("\nType enter to return to the manager menu.");
 }
 
 void list_by_reg_date(){
