@@ -92,6 +92,7 @@ void creat_new_account(){
     printf("Do you want to create a manager or a client account?\n");
     printf("\t(1) Manager account\n\t(2) Client account\n\nChoose one option: ");
     int option;
+    __fpurge(stdin);
     scanf("%d", &option);
     printf("\n");
     switch (option){
@@ -130,25 +131,18 @@ void new_account(char *role){
   }
   printf("Type the name of the new %s: ", role);
   char *name = reading();
-  int k = 1;
-  char *password = malloc(50 * sizeof(char));
-  while(k){
-    printf("\nType the new password of at least %zu digits: ", digits);
-    scanf("%s", password);
-    printf("\n");
-    if (strlen(password) >= digits){
-      char *confirm_pass;
-      printf("Confirm new password: ");
-      confirm_pass = reading();
-      printf("\n");
-      if (strcmp(password, confirm_pass) == 0){
-        k = 0;
-      } else {
-        printf("Password checking doesn't match. Try again.\n\n");
-      }
-    } else {
-      printf("Password is less than %zu digits, try again.\n\n", digits);
+  printf("\nType the new password of at least %zu digits: ", digits);
+  char *password = reading();
+  if (strlen(password) >= digits){
+    printf("\nConfirm new password: ");
+    char *confirm_pass = reading();
+    if (strcmp(password, confirm_pass) != 0){
+      printf("\nPassword checking doesn't match. Try again.\n\n");
+      return;
     }
+  } else {
+      printf("\nPassword is less than %zu digits, try again.\n\n", digits);
+      return;
   }
   int new_matriculation;
   char char_matricula[50];
@@ -177,7 +171,7 @@ void new_account(char *role){
     new_client_data(name, char_matricula);
   }
   FILE *file = fopen("storage/login.csv", "a");
-  fprintf(file, "%s,%s,%s,%s,\n\n", name, char_matricula, password, role);
+  fprintf(file, "%s,%s,%s,%s,\n", name, char_matricula, password, role);
   rewind(file);
   fclose(file);
 }
@@ -261,7 +255,7 @@ rewind(file);
     return;
 }
 
-  printf("Are you sure you want to delete %s's account?\n(y)Yes\n(n)No\nChoose one: ", name);
+  printf("Are you sure you want to delete %s 's account?\n(y)Yes\n(n)No\nChoose one: ", name);
   char op;
   __fpurge(stdin);
   scanf("%c", &op);
@@ -525,7 +519,6 @@ void list_accounts_alphabetically(){
   for (i = 0; i < file_lines; i++){
     printf("%s\n", new_names[i]);
   }
-  printf("\nType enter to return to the manager menu.");
 }
 
 void list_by_reg_date(){
