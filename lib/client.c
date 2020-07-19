@@ -8,7 +8,7 @@ void client_menu(List *node){
   while (k){
     clear_database();
     system("clear");
-    printf("HOME/CLIENT MENU\n\nWhat option do you want to execute? \n\n");
+    printf("HOME / CLIENT MENU\n\nWhat option do you want to execute? \n\n");
     printf("\t(1) View balance\n");
     printf("\t(2) Deposit value\n");
     printf("\t(3) Remove value\n");
