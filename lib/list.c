@@ -25,17 +25,17 @@ void delete_block(List *list, int position){
   }
 }
 
-void new_linked_block(List *list, List *new_block){
+List* new_linked_block(List *list, List *new_block){
   if (list == NULL){
-    new_block->prev = (List*) NULL;
-    new_block->next = (List*) NULL;
+    new_block->prev = NULL;
+    new_block->next = NULL;
     list = new_block;
   } else {
     List *aux;
     for (aux = list; aux->next != NULL; aux = aux->next);
     new_block->prev = aux;
-    new_block->next = (List*) NULL;
+    new_block->next = NULL;
     aux->next = new_block;
   }
-
+  return list;
 }

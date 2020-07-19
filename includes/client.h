@@ -11,6 +11,7 @@
 #include "login.h"
 
 void client_menu(List *node);
+float deposit(char *authentic_mat);
 void new_client(Client *client);
 char* get_client_name(Client *node);
 char* get_client_matricula(Client *node);
@@ -28,5 +29,8 @@ List* create_list_accounts(FILE *file, int file_lines);
 List* create_list_char(FILE *file, int file_lines);
 void print_list_of_clients(List *list);
 void print_char_list(List *list);
+void delete_client_account(char *matricula);
+void logger(int option, char *matricula, float value);
+void clear_database();
 
 #endif

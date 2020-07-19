@@ -9,6 +9,9 @@
 char* reading();
 char** sort_list(char **list, int size_list);
 int number_of_file_lines(FILE *file);
+int time_hour();
+int time_minutes();
+int time_seconds();
 int date_day();
 int date_month();
 int date_year();

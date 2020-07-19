@@ -11,6 +11,6 @@
 
 
 int main(){
-  manager_menu();
+  home_page();
 return 0;
 }

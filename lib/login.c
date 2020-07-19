@@ -2,12 +2,7 @@
 
 List* login(char *authenticated_role){
   FILE *login = fopen("storage/login.csv", "r");
-  int file_lines = 0;
-  for (char c = getc(login); c != EOF; c = getc(login)){
-    if (c == '\n'){
-      file_lines++;
-    }
-  }
+  int file_lines = number_of_file_lines(login);
   List *logins_list = create_list_logins(login, file_lines);
   List *authenticated_user = NULL;
   char *matricula;
@@ -20,13 +15,11 @@ List* login(char *authenticated_role){
     printf("(2) MANAGER\n");
     printf("Choose one of the options: ");
     scanf("%d", &option);
-    printf("\n");
     switch (option) {
       case 1:
         system("clear");
         printf("Type your matriculation: ");
         matricula = reading();
-        printf("\n");
         int *length = (int*) malloc(sizeof(int));
         char role[] = "client";
         strcpy(authenticated_role, role);
@@ -39,10 +32,10 @@ List* login(char *authenticated_role){
           }
         }
         if (authenticated_user == NULL){
-          printf("Invalid matriculation, try again.\n");
+          printf("\nInvalid matriculation, try again.\n");
         } else {
             k = 0;
-            printf("Type your password: ");
+            printf("\nType your password: ");
             password = reading();
             printf("\n");
             char *comparative_password = get_user_password(authenticated_user->data->user);
@@ -50,7 +43,7 @@ List* login(char *authenticated_role){
               k = 0;
               return authenticated_user;
             } else {
-              printf("Incorrect password.\n");
+              printf("\nIncorrect password.\n");
             }
         }
         break;
@@ -58,7 +51,6 @@ List* login(char *authenticated_role){
         system("clear");
         printf("Type your matriculation: ");
         matricula = reading();
-        printf("\n");
         int *length2 = (int*) malloc(sizeof(int));
         char role2[] = "manager";
         strcpy(authenticated_role, role2);
@@ -71,19 +63,19 @@ List* login(char *authenticated_role){
           }
         }
         if (authenticated_user == NULL){
-          printf("Invalid matriculation, try again.\n");
+          printf("\nInvalid matriculation, try again.\n");
         } else {
             k = 0;
-            printf("Type your password: ");
+            printf("\nType your password: ");
             password = reading();
             printf("\n");
             char *comparative_password = get_user_password(authenticated_user->data->user);
             if (strcmp(password, comparative_password) == 0){
-              printf("Login succeded!\n\n");
+              printf("\nLogin succeded!\n\n");
               k = 0;
               return authenticated_user;
             } else {
-                printf("Incorrect password.\n");
+                printf("\nIncorrect password.\n");
             }
         }
         break;
@@ -100,7 +92,7 @@ List* login(char *authenticated_role){
 
 void new_login(User *user){
   user->name = (char*) malloc(50 * sizeof(char));
-  user->password = (char*) malloc(10 * sizeof(char));
+  user->password = (char*) malloc(20 * sizeof(char));
   user->matricula = (char*) malloc(20 * sizeof(char));
   user->role = (char*) malloc(10 * sizeof(char));
 }
@@ -194,7 +186,8 @@ void print_list_logins(List *list){
 }
 
 List* new_block(List *list, User *user){
-  List *new_block = new_node();
+  List *new_block = (List*) malloc(sizeof(List));
+  new_block->data = malloc(sizeof(User));
   new_block->data->user = (User*) malloc(sizeof(User));
   char *name = get_user_name(user);
   char *matricula = get_user_matricula(user);
@@ -205,13 +198,13 @@ List* new_block(List *list, User *user){
   set_user_matricula(new_block->data->user, matricula);
   set_user_password(new_block->data->user, password);
   set_user_role(new_block->data->user, role);
-  new_linked_block(list, new_block);
+  list = new_linked_block(list, new_block);
   return list;
 }
 
 List* filter_logins(List *list, char* (*block)(User*), char *attribute, int *length){
   List *aux;
-  List *filtered_list = (List*) NULL;
+  List *filtered_list = NULL;
   int i = 0;
   *length = 0;
   for (aux = list; aux != NULL; aux = aux->next){

@@ -42,6 +42,29 @@ int number_of_file_lines(FILE *file){
   return file_lines;
 }
 
+int time_hour(){
+  struct tm *data_hora_atual;
+  time_t segundos;
+  time(&segundos);
+  data_hora_atual = localtime(&segundos);
+  return data_hora_atual->tm_hour;
+}
+
+int time_minutes(){
+  struct tm *data_hora_atual;
+  time_t segundos;
+  time(&segundos);
+  data_hora_atual = localtime(&segundos);
+  return data_hora_atual->tm_min;
+}
+
+int time_seconds(){
+  struct tm *data_hora_atual;
+  time_t segundos;
+  time(&segundos);
+  data_hora_atual = localtime(&segundos);
+  return data_hora_atual->tm_sec;
+}
 
 int date_day(){
   struct tm *data_hora_atual;

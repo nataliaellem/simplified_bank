@@ -18,7 +18,6 @@ void manager_menu(){
     printf("Choose one: ");
     scanf("%d", &option);
     printf("\n");
-    int n = 1;
     switch (option) {
       case 1:
         system("clear");
@@ -217,10 +216,10 @@ void delete_account(char *matricula){
   char *name = (char*) malloc(50 * sizeof(char));
   char *role = (char*) malloc(10 * sizeof(char));
   while(i < file_lines+1){
-    char *first_column = calloc(50, sizeof(char));
-    char *second_column = calloc(50, sizeof(char));
-    char *third_column = calloc(50, sizeof(char));
-    char *fourth_column = calloc(50, sizeof(char));
+    char *first_column = (char*) calloc(50, sizeof(char));
+    char *second_column = (char*) calloc(50, sizeof(char));
+    char *third_column = (char*) calloc(50, sizeof(char));
+    char *fourth_column = (char*) calloc(50, sizeof(char));
     fscanf(file, "%[^,],%[^,],%[^,],%[^,],\n", first_column, second_column, third_column, fourth_column);
     if (strcmp(second_column, matricula) == 0){
       strcpy(authenticated_matricula, matricula);
@@ -309,89 +308,6 @@ rewind(file);
     }
   }
 
-void delete_client_account(char *matricula){
-  FILE *file = fopen("storage/accounts.csv", "r");
-  int file_lines = number_of_file_lines(file);
-  rewind(file);
-  int line;
-  int i = 1;
-  int n_char_first_col = 0;
-  int n_char_sec_col = 0;
-  int n_char_third_col = 0;
-  int n_char_fourth_col = 0;
-  int n_char_fifth_col = 0;
-  char *authenticated_matricula = (char*) malloc(20 * sizeof(char));
-  char *name = (char*) malloc(50 * sizeof(char));
-  while(i < file_lines+1){
-    char *first_column = calloc(50, sizeof(char));
-    char *second_column = calloc(50, sizeof(char));
-    char *third_column = calloc(50, sizeof(char));
-    char *fourth_column = calloc(50, sizeof(char));
-    char *fifth_column = calloc(14, sizeof(char));
-    fscanf(file, "%[^,],%[^,],%[^,],%[^,],%[^,],\n", first_column, second_column, third_column, fourth_column, fifth_column);
-    if (strcmp(second_column, matricula) == 0){
-      strcpy(authenticated_matricula, matricula);
-      strcpy(name, first_column);
-      line = i;
-      for (int j = 1; j<51; j++){
-          if (first_column[j] == 0 && n_char_first_col == 0){
-            n_char_first_col = j;
-          }
-          if (second_column[j] == 0 && n_char_sec_col == 0){
-            n_char_sec_col = j;
-          }
-          if (third_column[j] == 0 && n_char_third_col == 0){
-            n_char_third_col = j;
-          }
-          if (fourth_column[j] == 0 && n_char_fourth_col == 0){
-            n_char_fourth_col = j;
-          }
-          if (fifth_column[j] == 0 && n_char_fifth_col == 0){
-            n_char_fifth_col = j;
-          }
-      }
-    }
-    free(first_column);
-    free(second_column);
-    free(third_column);
-    free(fourth_column);
-    free(fifth_column);
-    i++;
-}
-  rewind(file);
-  fclose(file);
-  file = fopen("storage/accounts.csv", "r+");
-  int offset = 0;
-  for (int n = 1; n < line; n++){
-    offset++;
-    for (char ch = getc(file); ch != '\n'; ch = getc(file)){
-      offset++;
-    }
-  }
-  fseek(file, offset, SEEK_SET);
-  for (int k = 0; k < n_char_first_col; k++){
-    fprintf(file, "!");
-  }
-  fprintf(file, ",");
-  for (int l = 0; l < n_char_sec_col; l++){
-    fprintf(file, "!");
-  }
-  fprintf(file, ",");
-  for (int m = 0; m < n_char_third_col; m++){
-    fprintf(file, "!");
-  }
-  fprintf(file, ",");
-  for (int n = 0; n < n_char_fourth_col; n++){
-    fprintf(file, "!");
-  }
-  fprintf(file, ",");
-  for (int b = 0; b < n_char_fifth_col; b++){
-    fprintf(file, "!");
-  }
-  fprintf(file, ",");
-  rewind(file);
-  fclose(file);
-}
 
 void change_transfer_limit(){
   printf("Type the matriculation of the account you want to modify the transfer limit: ");
@@ -416,11 +332,11 @@ void change_transfer_limit(){
   char *transfer_limit = (char*) malloc(50 * sizeof(char));
   char *reg_date = (char*) malloc(14 * sizeof(char));
   while(i < file_lines+1){
-    char *first_column = calloc(50, sizeof(char));
-    char *second_column = calloc(50, sizeof(char));
-    char *third_column = calloc(50, sizeof(char));
-    char *fourth_column = calloc(50, sizeof(char));
-    char *fifth_column = calloc(14, sizeof(char));
+    char *first_column = (char*) calloc(50, sizeof(char));
+    char *second_column = (char*) calloc(50, sizeof(char));
+    char *third_column = (char*) calloc(50, sizeof(char));
+    char *fourth_column = (char*) calloc(50, sizeof(char));
+    char *fifth_column = (char*) calloc(14, sizeof(char));
     fscanf(file, "%[^,],%[^,],%[^,],%[^,],%[^,],\n", first_column, second_column, third_column, fourth_column, fifth_column);
     if (strcmp(second_column, matricula) == 0){
       strcpy(authenticated_matricula, matricula);
@@ -540,9 +456,9 @@ void list_by_reg_date(){
 
 List* sort_linked_list_by_date(List *list){
   List *i, *j;
-  char *higher_date = malloc(50 * sizeof(char));
-  char *name = malloc(50 * sizeof(char));
-  char *matricula = malloc(50 * sizeof(char));
+  char *higher_date = (char*) malloc(50 * sizeof(char));
+  char *name = (char*) malloc(50 * sizeof(char));
+  char *matricula = (char*) malloc(50 * sizeof(char));
   float balance;
   float limit;
   for (i=list; i!=NULL; i=i->next){
@@ -583,7 +499,7 @@ void bank_reserve(){
   FILE *file = fopen("storage/accounts.csv", "r");
   int file_lines = number_of_file_lines(file);
   List *clients = create_list_accounts(file, file_lines);
-  float *reserves = malloc(file_lines * sizeof(float));
+  float *reserves = (float*) malloc(file_lines * sizeof(float));
   List *aux = clients;
   for (int i = 0; i < file_lines; i++){
     if (aux != NULL){
@@ -600,61 +516,4 @@ void bank_reserve(){
   rewind(file);
   fclose(file);
   printf("Total bank reserves: %.2f\n", total_reserves);
-}
-
-void clear_database(){
-  FILE *file = fopen("storage/login.csv", "r");
-  int file_lines = number_of_file_lines(file);
-  List *logins = create_list_logins(file, file_lines);
-  rewind(file);
-  fclose(file);
-  List *aux;
-  int position;
-  int count = 0;
-  for (aux = logins; aux != NULL; aux = aux->next){
-    count++;
-    if (aux->data->user->matricula[0] == '!'){
-      position = count;
-      delete_block(logins, position);
-    }
-  }
-  file = fopen("storage/login.csv", "w");
-  List *aux2;
-  for (aux2 = logins; aux2 != NULL; aux2 = aux2->next){
-      fprintf(file, "%s,", aux2->data->user->name);
-      fprintf(file, "%s,", aux2->data->user->matricula);
-      fprintf(file, "%s,", aux2->data->user->password);
-      fprintf(file, "%s,", aux2->data->user->role);
-      fprintf(file, "\n");
-  }
-  rewind(file);
-  fclose(file);
-  FILE *accounts = fopen("storage/accounts.csv", "r");
-  int accounts_lines = number_of_file_lines(accounts);
-  List *list = create_list_char(accounts, accounts_lines);
-  rewind(accounts);
-  fclose(accounts);
-  List *a;
-  int pos;
-  count = 0;
-  for (a = list; a != NULL; a = a->next){
-    count++;
-    if (a->data->client->matricula[0] == '!'){
-      pos = count;
-      delete_block(list, pos);
-    }
-  }
-  accounts = fopen("storage/accounts.csv", "w");
-  List *a2;
-  for (a2 = list; a2 != NULL; a2 = a2->next){
-    fprintf(accounts, "%s,", a2->data->client->name);
-    fprintf(accounts, "%s,", a2->data->client->matricula);
-    fprintf(accounts, "%s,", a2->data->client->char_balance);
-    fprintf(accounts, "%s,", a2->data->client->char_transfer_limit);
-    fprintf(accounts, "%s,", a2->data->client->reg_date);
-    fprintf(accounts, "\n");
-  }
-  rewind(accounts);
-  fclose(accounts);
-  printf("Clean database.\n");
 }
