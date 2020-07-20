@@ -5,7 +5,7 @@ void manager_menu(){
   int option;
   while (k){
     system("clear");
-    printf("\nMANAGER MENU\n\n");
+    printf("\nHOME / MANAGER MENU\n\n");
     printf("What option do you want to execute? \n\n");
     printf("\t(1) Create new account\n");
     printf("\t(2) Delete an account\n");
@@ -21,6 +21,7 @@ void manager_menu(){
     switch (option) {
       case 1:
         system("clear");
+        printf("HOME / MANAGER MENU / CREATE NEW ACCOUNT\n");
         creat_new_account();
         printf("\nType enter to return to the manager menu.");
         __fpurge(stdin);
@@ -28,6 +29,7 @@ void manager_menu(){
         break;
       case 2:
         system("clear");
+        printf("HOME / MANAGER MENU / DELETE AN ACCOUNT\n");
         printf("Enter the registration number of the account you want to delete: ");
         char *matricula = (char*) malloc(50 * sizeof(char));
         scanf("%s", matricula);
@@ -39,6 +41,7 @@ void manager_menu(){
         break;
       case 3:
         system("clear");
+        printf("HOME / MANAGER MENU / MODIFY A TRANSFER LIMIT\n");
         change_transfer_limit();
         printf("\nType enter to return to the manager menu.");
         __fpurge(stdin);
@@ -46,6 +49,7 @@ void manager_menu(){
         break;
       case 4:
         system("clear");
+        printf("HOME / MANAGER MENU / LIST CUSTOMERS ALPHABETICALLY\n");
         list_accounts_alphabetically();
         printf("\nType enter to return to the manager menu.");
         __fpurge(stdin);
@@ -53,6 +57,8 @@ void manager_menu(){
         break;
       case 5:
         system("clear");
+        printf("HOME / MANAGER MENU / LIST CUSTOMERS BY REGISTRATION DATE\n");
+
         list_by_reg_date();
         printf("\nType enter to return to the manager menu.");
         __fpurge(stdin);
@@ -60,13 +66,15 @@ void manager_menu(){
         break;
       case 6:
         system("clear");
+        printf("HOME / MANAGER MENU / LIST TOTAL BANK RESERVES\n");
         bank_reserve();
         printf("\nType enter to return to the manager menu.");
         __fpurge(stdin);
         getc(stdin);
         break;
       case 7:
-        system("clear");
+      system("clear");
+      printf("HOME / MANAGER MENU / CLEAN DATABASE\n");
         clear_database();
         printf("\nType enter to return to the manager menu.");
         __fpurge(stdin);
@@ -94,16 +102,14 @@ void creat_new_account(){
     __fpurge(stdin);
     scanf("%d", &option);
     printf("\n");
+    char manager[] = "manager";
+    char client[] = "client";
     switch (option){
       case 1:
-        system("clear");
-        char *manager = "manager";
         new_account(manager);
         c = 0;
         break;
       case 2:
-        system("clear");
-        char *client = "client";
         new_account(client);
         c = 0;
         break;
@@ -430,7 +436,8 @@ void list_accounts_alphabetically(){
     i++;
   }
   system("clear");
-  printf("LIST OF CUSTOMERS IN ALFABETICAL ORDER\n\n");
+  printf("HOME / MANAGER MENU / LIST CUSTOMERS ALPHABETICALLY\n");
+  printf("LIST OF CUSTOMERS IN ALPHABETICAL ORDER\n\n");
   char **new_names = sort_list(names, file_lines);
   for (i = 0; i < file_lines; i++){
     printf("%s\n", new_names[i]);
@@ -447,6 +454,7 @@ void list_by_reg_date(){
   List *new_list = sort_linked_list_by_date(list);
   List *aux;
   system("clear");
+  printf("HOME / MANAGER MENU / LIST CUSTOMERS BY REGISTRATION DATE\n");
   printf("LIST OF CLIENTS BY REGISTRATION DATE\n\n");
   for (aux = new_list; aux != NULL; aux = aux->next){
     printf("%s --> %s\n", aux->data->client->name, aux->data->client->reg_date);
@@ -509,6 +517,7 @@ void bank_reserve(){
     }
   }
   float total_reserves = 0;
+  printf("HOME / MANAGER MENU / LIST TOTAL BANK RESERVES\n");
   for (int j = 0; j < file_lines; j++){
     total_reserves = total_reserves + reserves[j];
     printf("Reserve of client %d: %.2f\n", j+1, reserves[j]);

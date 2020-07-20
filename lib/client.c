@@ -23,8 +23,8 @@ void client_menu(List *node){
     switch(option){
       case 1:
         system("clear");
-        printf("HOME / CLIENT MENU / VIEW BALANCE\n", );
-        //view_balance();
+        printf("HOME / CLIENT MENU / VIEW BALANCE\n\n");
+        view_balance(matricula);
         logger(option, matricula, value);
         printf("\nType enter to return to the client menu.");
         __fpurge(stdin);
@@ -32,7 +32,7 @@ void client_menu(List *node){
         break;
       case 2:
         system("clear");
-        printf("HOME / CLIENT MENU / DEPPOSIT\n", );
+        printf("HOME / CLIENT MENU / DEPPOSIT\n\n");
         value = deposit(matricula);
         logger(option, matricula, value);
         printf("\nType enter to return to the client menu.");
@@ -41,35 +41,35 @@ void client_menu(List *node){
         break;
       case 3:
         system("clear");
-        printf("HOME / CLIENT MENU / REMOVE VALUE\n", );
+        printf("HOME / CLIENT MENU / REMOVE VALUE\n\n");
         printf("\nType enter to return to the client menu.");
         __fpurge(stdin);
         getc(stdin);
         break;
       case 4:
         system("clear");
-        printf("HOME / CLIENT MENU / MAKE TRANSFER\n", );
+        printf("HOME / CLIENT MENU / MAKE TRANSFER\n\n");
         printf("\nType enter to return to the client menu.");
         __fpurge(stdin);
         getc(stdin);
         break;
       case 5:
         system("clear");
-        printf("HOME / CLIENT MENU / VIEW REGISTRATION DATE\n", );
+        printf("HOME / CLIENT MENU / VIEW REGISTRATION DATE\n\n");
         printf("\nType enter to return to the client menu.");
         __fpurge(stdin);
         getc(stdin);
         break;
       case 6:
         system("clear");
-        printf("HOME / CLIENT MENU / VIEW TRANSFER LIMIT\n", );
+        printf("HOME / CLIENT MENU / VIEW TRANSFER LIMIT\n\n");
         printf("\nType enter to return to the client menu.");
         __fpurge(stdin);
         getc(stdin);
         break;
       case 7:
         system("clear");
-        printf("HOME / CLIENT MENU / VIEW EXTRACT\n", );
+        printf("HOME / CLIENT MENU / VIEW EXTRACT\n\n");
         printf("\nType enter to return to the client menu.");
         __fpurge(stdin);
         getc(stdin);
@@ -82,6 +82,22 @@ void client_menu(List *node){
         break;
     }
   }
+}
+
+void view_balance(char *matricula){
+  FILE *file = fopen("storage/accounts.csv", "r");
+  int file_lines = number_of_file_lines(file);
+  List *accounts = create_list_accounts(file, file_lines);
+  List *aux;
+  float balance;
+  for (aux = accounts; aux != NULL; aux = aux->next){
+    char *comp_mat = get_client_matricula(aux->data->client);
+    if (strcmp(matricula, comp_mat) == 0){
+      balance = get_client_balance(aux->data->client);
+      break;
+    }
+  }
+  printf("Your balance is : %.2f\n", balance);
 }
 
 float deposit(char *authentic_mat){

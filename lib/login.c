@@ -1,7 +1,7 @@
 #include "../includes/login.h"
 
 List* login(char *authenticated_role){
-  printf("HOME / LOGIN\n");
+  printf("HOME / LOGIN\n\n");
   FILE *login = fopen("storage/login.csv", "r");
   int file_lines = number_of_file_lines(login);
   List *logins_list = create_list_logins(login, file_lines);

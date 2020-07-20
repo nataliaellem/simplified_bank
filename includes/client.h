@@ -11,6 +11,7 @@
 #include "login.h"
 
 void client_menu(List *node);
+void view_balance(char *matricula);
 float deposit(char *authentic_mat);
 void new_client(Client *client);
 char* get_client_name(Client *node);
