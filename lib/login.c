@@ -1,6 +1,6 @@
 #include "../includes/login.h"
 
-List* login(char *authenticated_role){
+List* login(char *authenticated_role, int *t){
   printf("HOME / LOGIN\n\n");
   FILE *login = fopen("storage/login.csv", "r");
   int file_lines = number_of_file_lines(login);
@@ -12,14 +12,19 @@ List* login(char *authenticated_role){
   int k = 1;
   while(k){
     printf("Do you want to login as a client or as a manager?\n");
+    printf("(To exit the page press '0')\n\n");
     printf("(1) CLIENT\n");
     printf("(2) MANAGER\n");
     printf("Choose one of the options: ");
     scanf("%d", &option);
     switch (option) {
+      case 0:
+        t[0] = 0;
+        k = 0;
+        break;
       case 1:
         system("clear");
-        printf("HOME / CLIENT LOGIN\n");
+        printf("HOME / CLIENT LOGIN\n\n");
         printf("Type your matriculation: ");
         matricula = reading();
         int *length = (int*) malloc(sizeof(int));
@@ -51,7 +56,7 @@ List* login(char *authenticated_role){
         break;
       case 2:
         system("clear");
-        printf("HOME / MANAGER LOGIN\n");
+        printf("HOME / MANAGER LOGIN\n\n");
         printf("Type your matriculation: ");
         matricula = reading();
         int *length2 = (int*) malloc(sizeof(int));

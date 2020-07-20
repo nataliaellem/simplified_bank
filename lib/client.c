@@ -20,6 +20,8 @@ void client_menu(List *node){
     printf("Choose one: ");
     scanf("%d", &option);
     printf("\n");
+    char deposit[] = "deposit";
+    char remove[] = "remove";
     switch(option){
       case 1:
         system("clear");
@@ -33,7 +35,7 @@ void client_menu(List *node){
       case 2:
         system("clear");
         printf("HOME / CLIENT MENU / DEPPOSIT\n\n");
-        value = deposit(matricula);
+        value = change_balance(matricula, deposit);
         logger(option, matricula, value);
         printf("\nType enter to return to the client menu.");
         __fpurge(stdin);
@@ -42,6 +44,8 @@ void client_menu(List *node){
       case 3:
         system("clear");
         printf("HOME / CLIENT MENU / REMOVE VALUE\n\n");
+        value = change_balance(matricula, remove);
+        logger(option, matricula, value);
         printf("\nType enter to return to the client menu.");
         __fpurge(stdin);
         getc(stdin);
@@ -100,7 +104,9 @@ void view_balance(char *matricula){
   printf("Your balance is : %.2f\n", balance);
 }
 
-float deposit(char *authentic_mat){
+float change_balance(char *authentic_mat, char *action){
+  char deposit[] = "deposit";
+  char remove[] = "remove";
   List *client = NULL;
   FILE *file = fopen("storage/accounts.csv", "r");
   int file_lines = number_of_file_lines(file);
@@ -123,7 +129,11 @@ float deposit(char *authentic_mat){
   float value;
   while (n) {
     printf("Type '0' to exit.\n");
-    printf("Or enter the amount to be deposited: \n");
+    if (strcmp(action, deposit) == 0){
+      printf("Or enter the amount to be deposited: \n");
+    } else if (strcmp(action, remove) == 0){
+        printf("Or enter the amount to be withdrawn: \n");
+    }
     scanf("%f", &value);
     if (value == 0){
       return 0;
@@ -138,12 +148,18 @@ float deposit(char *authentic_mat){
   float transfer_limit = get_client_transfer_limit(client->data->client);
   char *reg_date = get_reg_date(client->data->client);
   delete_client_account(authentic_mat);
-  balance = balance + value;
+  if (strcmp(action, deposit) == 0){
+    balance = balance + value;
+  } else if (strcmp(action, remove) == 0 && value <= balance){
+      balance = balance - value;
+  } else {
+    return 0;
+  }
   file = fopen("storage/accounts.csv", "a");
   fprintf(file, "%s,%s,%.2f,%.2f,%s,\n", name, authentic_mat, balance, transfer_limit, reg_date);
   rewind(file);
   fclose(file);
-  printf("Successfull deposit.\n");
+  printf("Operation completed successfully.\n");
   return value;
 }
 
@@ -430,7 +446,7 @@ void clear_database(){
     count++;
     if (aux->data->user->matricula[0] == '!'){
       position = count;
-      delete_block(logins, position);
+      logins = delete_block(logins, position);
     }
   }
   file = fopen("storage/login.csv", "w");
@@ -456,7 +472,7 @@ void clear_database(){
     count++;
     if (a->data->client->matricula[0] == '!'){
       pos = count;
-      delete_block(list, pos);
+      list = delete_block(list, pos);
     }
   }
   accounts = fopen("storage/accounts.csv", "w");

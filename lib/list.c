@@ -5,7 +5,7 @@ List* new_node(){
   return new_block;
 }
 
-void delete_block(List *list, int position){
+List* delete_block(List *list, int position){
   List *aux = list;
   for (int i = 1; i < position+1; i++){
     if (i == position){
@@ -18,11 +18,11 @@ void delete_block(List *list, int position){
         aux->prev->next = aux->next;
         aux->next->prev = aux->prev;
       }
-      //free(aux);
-      return;
+      break;
     }
     aux = aux->next;
   }
+  return list;
 }
 
 List* new_linked_block(List *list, List *new_block){

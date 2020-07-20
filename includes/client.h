@@ -12,7 +12,7 @@
 
 void client_menu(List *node);
 void view_balance(char *matricula);
-float deposit(char *authentic_mat);
+float change_balance(char *authentic_mat, char *action);
 void new_client(Client *client);
 char* get_client_name(Client *node);
 char* get_client_matricula(Client *node);

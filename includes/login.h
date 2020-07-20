@@ -9,7 +9,7 @@
 #include "helper.h"
 
 
-List* login(char *authenticated_role);
+List* login(char *authenticated_role, int *t);
 void new_login(User *user);
 char* get_user_name(User *user);
 char* get_user_matricula(User *user);
