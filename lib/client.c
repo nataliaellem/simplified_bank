@@ -87,6 +87,7 @@ void client_menu(List *node){
       case 7:
         system("clear");
         printf("HOME / CLIENT MENU / VIEW EXTRACT\n\n");
+        view_extract(matricula);
         printf("\nType enter to return to the client menu.");
         __fpurge(stdin);
         getc(stdin);
@@ -519,6 +520,26 @@ void delete_client_account(char *matricula){
   fprintf(file, ",");
   rewind(file);
   fclose(file);
+}
+void view_extract(char *matricula){
+  FILE *file = fopen("storage/production.log", "r");
+  int file_lines = number_of_file_lines(file);
+  List *list = create_list_logins(file, file_lines);
+  List *aux;
+  List *filtered_list = NULL;
+  for (aux = list; aux != NULL; aux = aux->next){
+    char *comp_mat = get_user_name(aux->data->user);
+    if (strcmp(comp_mat, matricula) == 0){
+      filtered_list = new_block(filtered_list, aux->data->user);
+    }
+  }
+  List *aux2;
+  for (aux2 = filtered_list; aux2 != NULL; aux2 = aux2->next){
+    printf("%s,", aux2->data->user->name);
+    printf("%s,", aux2->data->user->matricula);
+    printf("%s,", aux2->data->user->password);
+    printf("%s\n", aux2->data->user->role);
+  }
 }
 
 void logger(int option, char *matricula, float value, char *transfer_mat){

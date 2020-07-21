@@ -35,6 +35,7 @@ List* create_list_char(FILE *file, int file_lines);
 void print_list_of_clients(List *list);
 void print_char_list(List *list);
 void delete_client_account(char *matricula);
+void view_extract(char *matricula);
 void logger(int option, char *matricula, float value, char *transfer_mat);
 void clear_database();
 
