@@ -1,32 +1,32 @@
 #include "../includes/login.h"
 
 void new_login(User *user){
-  user->name = (char*) malloc(50 * sizeof(char));
-  user->password = (char*) malloc(20 * sizeof(char));
-  user->matricula = (char*) malloc(20 * sizeof(char));
-  user->role = (char*) malloc(10 * sizeof(char));
+  user->name = (char*) malloc(100 * sizeof(char));
+  user->password = (char*) malloc(50 * sizeof(char));
+  user->matricula = (char*) malloc(100 * sizeof(char));
+  user->role = (char*) malloc(50 * sizeof(char));
 }
 
 char* get_user_name(User *user){
-  char *name = (char*) malloc(50 * sizeof(char));
+  char *name = (char*) malloc(100 * sizeof(char));
   strcpy(name, user->name);
   return name;
 }
 
 char* get_user_matricula(User *user){
-  char *matricula = (char*) malloc(20 * sizeof(char));
+  char *matricula = (char*) malloc(100 * sizeof(char));
   strcpy(matricula, user->matricula);
   return matricula;
 }
 
 char* get_user_password(User *user){
-  char *password = (char*) malloc(10 * sizeof(char));
+  char *password = (char*) malloc(50 * sizeof(char));
   strcpy(password, user->password);
   return password;
 }
 
 char* get_user_role(User *user){
-  char *role = (char*) malloc(10 * sizeof(char));
+  char *role = (char*) malloc(50 * sizeof(char));
   strcpy(role, user->role);
   return role;
 }
@@ -56,7 +56,7 @@ List* create_list_logins(FILE *file, int file_lines){
   rewind(file);
   int i = 0;
   while(i < file_lines){
-    char first_column[50], second_column[50], third_column[50], fourth_column[50];
+    char first_column[100], second_column[100], third_column[50], fourth_column[50];
     fscanf(file, "%[^,],%[^,],%[^,],%[^,],\n", first_column, second_column, third_column, fourth_column);
     List *new_block = new_node();
     new_block->data->user = (User*) malloc(sizeof(User));
