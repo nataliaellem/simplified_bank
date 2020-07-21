@@ -11,6 +11,6 @@
 
 
 int main(){
-  clear_database();
+  login();
 return 0;
 }

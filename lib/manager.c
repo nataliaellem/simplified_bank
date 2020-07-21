@@ -324,6 +324,10 @@ void change_transfer_limit(){
   printf("\nType the new transfer limit: ");
   scanf("%f", &new_limit);
   printf("\n");
+  if (!(new_limit > 0)){
+    printf("Invalid value, try again.\n");
+    return;
+  }
   FILE *file = fopen("storage/accounts.csv", "r");
   int file_lines = number_of_file_lines(file);
   rewind(file);
@@ -334,7 +338,7 @@ void change_transfer_limit(){
   int n_char_fifth_col = 0;
   int line;
   int i = 1;
-  char *authenticated_matricula = (char*) malloc(20 * sizeof(char));
+  char *authenticated_matricula = (char*) calloc(20, sizeof(char));
   char *name = (char*) malloc(50 * sizeof(char));
   char *balance = (char*) malloc(50 * sizeof(char));
   char *transfer_limit = (char*) malloc(50 * sizeof(char));
@@ -377,6 +381,10 @@ void change_transfer_limit(){
     free(fourth_column);
     free(fifth_column);
     i++;
+  }
+  if (authenticated_matricula[0] == 0 && authenticated_matricula[1] == 0){
+    printf("Invalid matriculation, try again.\n");
+    return;
   }
   rewind(file);
   fclose(file);

@@ -2,7 +2,7 @@
 
 void client_menu(List *node){
   char *matricula = get_user_matricula(node->data->user);
-  char *transfer_mat = (char*) malloc(20 * sizeof(char));
+  char *transfer_mat;
   int k =1;
   float value = 0;
   int option;
@@ -22,12 +22,15 @@ void client_menu(List *node){
     printf("\n");
     char deposit[] = "deposit";
     char remove[] = "remove";
+    char balance[] = "balance";
+    char transfer_limit[] = "transfer limit";
+    char reg_date[] = "registration date";
     switch(option){
       case 1:
         clear_database();
         system("clear");
         printf("HOME / CLIENT MENU / VIEW BALANCE\n\n");
-        view_balance(matricula);
+        view_char_data(matricula, get_client_char_balance, balance);
         logger(option, matricula, value, transfer_mat);
         printf("\nType enter to return to the client menu.");
         __fpurge(stdin);
@@ -57,6 +60,7 @@ void client_menu(List *node){
         clear_database();
         system("clear");
         printf("HOME / CLIENT MENU / MAKE TRANSFER\n\n");
+        transfer_mat = get_receiver_matricula();
         value = make_transfer(matricula, transfer_mat);
         logger(option, matricula, value, transfer_mat);
         printf("\nType enter to return to the client menu.");
@@ -66,6 +70,8 @@ void client_menu(List *node){
       case 5:
         system("clear");
         printf("HOME / CLIENT MENU / VIEW REGISTRATION DATE\n\n");
+        view_char_data(matricula, get_reg_date, reg_date);
+        logger(option, matricula, value, transfer_mat);
         printf("\nType enter to return to the client menu.");
         __fpurge(stdin);
         getc(stdin);
@@ -73,6 +79,7 @@ void client_menu(List *node){
       case 6:
         system("clear");
         printf("HOME / CLIENT MENU / VIEW TRANSFER LIMIT\n\n");
+        view_char_data(matricula, get_client_char_transfer_limit, transfer_limit);
         printf("\nType enter to return to the client menu.");
         __fpurge(stdin);
         getc(stdin);
@@ -94,20 +101,20 @@ void client_menu(List *node){
   }
 }
 
-void view_balance(char *matricula){
+void view_char_data(char *matricula, char* (*block)(Client*), char *attribute){
   FILE *file = fopen("storage/accounts.csv", "r");
   int file_lines = number_of_file_lines(file);
-  List *accounts = create_list_accounts(file, file_lines);
+  List *accounts = create_list_char(file, file_lines);
   List *aux;
-  float balance;
+  char *data = (char*) malloc(50 *sizeof(char));
   for (aux = accounts; aux != NULL; aux = aux->next){
     char *comp_mat = get_client_matricula(aux->data->client);
     if (strcmp(matricula, comp_mat) == 0){
-      balance = get_client_balance(aux->data->client);
+      data = (*block)(aux->data->client);
       break;
     }
   }
-  printf("Your balance is : %.2f\n", balance);
+  printf("Your %s is : %s\n", attribute, data);
 }
 
 float change_balance(char *authentic_mat, char *action){
@@ -154,11 +161,16 @@ float change_balance(char *authentic_mat, char *action){
   float transfer_limit = get_client_transfer_limit(client->data->client);
   char *reg_date = get_reg_date(client->data->client);
   delete_client_account(authentic_mat);
+  if (value > balance){
+    printf("Insuficient founds on wallet.\n");
+    return 0;
+  }
   if (strcmp(action, deposit) == 0){
     balance = balance + value;
   } else if (strcmp(action, remove) == 0 && value <= balance){
       balance = balance - value;
   } else {
+      printf("Information is needed on what action should be taken, deposit or remove value.\n");
     return 0;
   }
   file = fopen("storage/accounts.csv", "a");
@@ -169,9 +181,13 @@ float change_balance(char *authentic_mat, char *action){
   return value;
 }
 
-float make_transfer(char *matricula, char *transfer_mat){
+char* get_receiver_matricula(){
   printf("Type the matriculation of the account you want to make a transfer: ");
-  transfer_mat = reading();
+  char *transfer_mat = reading();
+  return transfer_mat;
+}
+
+float make_transfer(char *matricula, char *transfer_mat){
   float value;
   printf("\nEnter the value: ");
   __fpurge(stdin);
@@ -257,6 +273,18 @@ char* get_reg_date(Client *node){
   char *reg_date = (char*) malloc(14 * sizeof(char));
   strcpy(reg_date, node->reg_date);
   return reg_date;
+}
+
+char* get_client_char_balance(Client *node){
+  char *balance = (char*) malloc(50 * sizeof(char));
+  strcpy(balance, node->char_balance);
+  return balance;
+}
+
+char* get_client_char_transfer_limit(Client *node){
+  char *transfer_limit = (char*) malloc(50 * sizeof(char));
+  strcpy(transfer_limit, node->char_transfer_limit);
+  return transfer_limit;
 }
 
 void set_client_name(Client *node, char *name){
@@ -384,8 +412,13 @@ void print_list_of_clients(List *list){
     i++;
     printf("NAME OF CLIENT %d: %s\n", i, aux->data->client->name);
     printf("MATRICULA OF CLIENT %d: %s\n", i, aux->data->client->matricula);
-    printf("BALANCE OF CLIENT %d: %.2f\n", i, aux->data->client->balance);
-    printf("TRANSFER LIMIT OF CLIENT %d: %.2f\n", i, aux->data->client->transfer_limit);
+    if (aux->data->client->name[0] == '!'){
+      printf("BALANCE OF CLIENT %d: %s\n", i, aux->data->client->char_balance);
+      printf("TRANSFER LIMIT OF CLIENT %d: %s\n", i, aux->data->client->char_transfer_limit);
+    } else {
+      printf("BALANCE OF CLIENT %d: %.2f\n", i, aux->data->client->balance);
+      printf("TRANSFER LIMIT OF CLIENT %d: %.2f\n", i, aux->data->client->transfer_limit);
+    }
     printf("REGISTRATION DATE OF CLIENT %d: %s\n", i, aux->data->client->reg_date);
     printf("\n");
 	}
@@ -497,19 +530,30 @@ void logger(int option, char *matricula, float value, char *transfer_mat){
   int minutes = time_minutes();
   int seconds = time_seconds();
   switch (option) {
-    case 1:
-      fprintf(file, "%s,visualized the balance,%d/%d/%d,%d:%d:%d,\n", matricula,day,month,year,hour,minutes,seconds);
-      break;
     case 2:
-      fprintf(file, "%s,deposited $ %.2f,%d/%d/%d,%d:%d:%d,\n", matricula,value,day,month,year,hour,minutes,seconds);
+      if (value == 0){
+        fprintf(file, "%s,tried to deposit,%d/%d/%d,%d:%d:%d,\n",matricula,day,month,year,hour,minutes,seconds);
+      } else {
+        fprintf(file, "%s,deposited $ %.2f,%d/%d/%d,%d:%d:%d,\n",matricula,value,day,month,year,hour,minutes,seconds);
+      }
       break;
     case 3:
-      fprintf(file, "%s,removed $ %.2f,%d/%d/%d,%d:%d:%d,\n", matricula,value,day,month,year,hour,minutes,seconds);
+      if (value == 0){
+        fprintf(file, "%s,tried to remove value,%d/%d/%d,%d:%d:%d,\n",matricula,day,month,year,hour,minutes,seconds);
+      } else {
+        fprintf(file, "%s,removed $ %.2f,%d/%d/%d,%d:%d:%d,\n",matricula,value,day,month,year,hour,minutes,seconds);
+      }
       break;
     case 4:
-      fprintf(file, "%s,made a transfer of $ %.2f to %s,%d/%d/%d,%d:%d:%d,\n", matricula,value, transfer_mat, day,month,year,hour,minutes,seconds);
+      if (value == 0){
+        fprintf(file, "%s,tried to make a transfer to %s,%d/%d/%d,%d:%d:%d,\n",matricula,transfer_mat,day,month,year,hour,minutes,seconds);
+      } else {
+        fprintf(file, "%s,made a transfer of $ %.2f to %s,%d/%d/%d,%d:%d:%d,\n",matricula,value,transfer_mat,day,month,year,hour,minutes,seconds);
+      }
       break;
   }
+  rewind(file);
+  fclose(file);
 }
 
 void clear_database(){

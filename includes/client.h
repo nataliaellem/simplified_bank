@@ -11,8 +11,9 @@
 #include "login.h"
 
 void client_menu(List *node);
-void view_balance(char *matricula);
+void view_char_data(char *matricula, char* (*block)(Client*), char *attribute);
 float change_balance(char *authentic_mat, char *action);
+char* get_receiver_matricula();
 float make_transfer(char *matricula, char *transfer_mat);
 void new_client(Client *client);
 char* get_client_name(Client *node);
@@ -20,6 +21,8 @@ char* get_client_matricula(Client *node);
 float get_client_balance(Client *node);
 float get_client_transfer_limit(Client *node);
 char* get_reg_date(Client *node);
+char* get_client_char_balance(Client *node);
+char* get_client_char_transfer_limit(Client *node);
 void set_client_name(Client *block, char *name);
 void set_client_balance(Client *block, float balance);
 void set_client_transfer_limit(Client *block, float transfer_limit);

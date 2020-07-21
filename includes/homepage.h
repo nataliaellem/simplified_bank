@@ -10,6 +10,6 @@
 #include "login.h"
 #include "models.h"
 
-void home_page();
+void login();
 
 #endif
