@@ -5,7 +5,7 @@ void manager_menu(){
   int option;
   while (k){
     system("clear");
-    printf("\nHOME / MANAGER MENU\n\n");
+    printf("HOME / MANAGER MENU\n\n");
     printf("What option do you want to execute? \n\n");
     printf("\t(1) Create new account\n");
     printf("\t(2) Delete an account\n");
@@ -40,6 +40,7 @@ void manager_menu(){
         getc(stdin);
         break;
       case 3:
+        clear_database();
         system("clear");
         printf("HOME / MANAGER MENU / MODIFY A TRANSFER LIMIT\n");
         change_transfer_limit();
@@ -65,6 +66,7 @@ void manager_menu(){
         getc(stdin);
         break;
       case 6:
+        clear_database();
         system("clear");
         printf("HOME / MANAGER MENU / LIST TOTAL BANK RESERVES\n");
         bank_reserve();
@@ -74,9 +76,9 @@ void manager_menu(){
         break;
       case 7:
       system("clear");
-      printf("HOME / MANAGER MENU / CLEAN DATABASE\n");
+      printf("HOME / MANAGER MENU / CLEAR DATABASE\n");
         clear_database();
-        printf("\nType enter to return to the manager menu.");
+        printf("\nClean database.\nType enter to return to the manager menu.");
         __fpurge(stdin);
         getc(stdin);
         break;

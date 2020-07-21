@@ -7,7 +7,9 @@ List* new_node(){
 
 List* delete_block(List *list, int position){
   List *aux = list;
-  for (int i = 1; i < position+1; i++){
+  int i = 0;
+  for (aux = list; aux != NULL; aux = aux->next){
+    i++;
     if (i == position){
       if (aux->prev == NULL){
         aux->next->prev = NULL;
@@ -18,9 +20,8 @@ List* delete_block(List *list, int position){
         aux->prev->next = aux->next;
         aux->next->prev = aux->prev;
       }
-      break;
+     return list;
     }
-    aux = aux->next;
   }
   return list;
 }

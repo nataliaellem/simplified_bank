@@ -2,11 +2,11 @@
 
 void client_menu(List *node){
   char *matricula = get_user_matricula(node->data->user);
+  char *transfer_mat = (char*) malloc(20 * sizeof(char));
   int k =1;
   float value = 0;
   int option;
   while (k){
-    clear_database();
     system("clear");
     printf("HOME / CLIENT MENU\n\nWhat option do you want to execute? \n\n");
     printf("\t(1) View balance\n");
@@ -24,35 +24,41 @@ void client_menu(List *node){
     char remove[] = "remove";
     switch(option){
       case 1:
+        clear_database();
         system("clear");
         printf("HOME / CLIENT MENU / VIEW BALANCE\n\n");
         view_balance(matricula);
-        logger(option, matricula, value);
+        logger(option, matricula, value, transfer_mat);
         printf("\nType enter to return to the client menu.");
         __fpurge(stdin);
         getc(stdin);
         break;
       case 2:
+        clear_database();
         system("clear");
         printf("HOME / CLIENT MENU / DEPPOSIT\n\n");
         value = change_balance(matricula, deposit);
-        logger(option, matricula, value);
+        logger(option, matricula, value, transfer_mat);
         printf("\nType enter to return to the client menu.");
         __fpurge(stdin);
         getc(stdin);
         break;
       case 3:
+        clear_database();
         system("clear");
         printf("HOME / CLIENT MENU / REMOVE VALUE\n\n");
         value = change_balance(matricula, remove);
-        logger(option, matricula, value);
+        logger(option, matricula, value, transfer_mat);
         printf("\nType enter to return to the client menu.");
         __fpurge(stdin);
         getc(stdin);
         break;
       case 4:
+        clear_database();
         system("clear");
         printf("HOME / CLIENT MENU / MAKE TRANSFER\n\n");
+        value = make_transfer(matricula, transfer_mat);
+        logger(option, matricula, value, transfer_mat);
         printf("\nType enter to return to the client menu.");
         __fpurge(stdin);
         getc(stdin);
@@ -163,6 +169,62 @@ float change_balance(char *authentic_mat, char *action){
   return value;
 }
 
+float make_transfer(char *matricula, char *transfer_mat){
+  printf("Type the matriculation of the account you want to make a transfer: ");
+  transfer_mat = reading();
+  float value;
+  printf("\nEnter the value: ");
+  __fpurge(stdin);
+  scanf("%f", &value);
+  FILE *file = fopen("storage/accounts.csv", "r");
+  int file_lines = number_of_file_lines(file);
+  List *list = create_list_accounts(file, file_lines);
+  rewind(file);
+  fclose(file);
+  float transfer_limit;
+  float user_balance;
+  float receiver_balance;
+  List *authenticated_user;
+  List *authenticated_receiver;
+  List *aux;
+  for (aux = list; aux != NULL; aux = aux->next){
+    char *comp_mat = get_client_matricula(aux->data->client);
+    if (strcmp(matricula, comp_mat) == 0){
+      transfer_limit = get_client_transfer_limit(aux->data->client);
+      user_balance = get_client_balance(aux->data->client);
+      authenticated_user = aux;
+    }
+   if (strcmp(transfer_mat, comp_mat) == 0){
+      receiver_balance = get_client_balance(aux->data->client);
+      authenticated_receiver = aux;
+    }
+  }
+  if (value > transfer_limit ){
+    printf("Value greater than the limit.\n");
+    return 0;
+  }
+  else if (value/0.01 >= 1 ){
+    char *user_name = get_client_name(authenticated_user->data->client);
+    char *receiver_name = get_client_name(authenticated_receiver->data->client);
+    float receiver_transfer_limit = get_client_transfer_limit(authenticated_receiver->data->client);
+    char *user_reg_date = get_reg_date(authenticated_user->data->client);
+    char *receiver_reg_date = get_reg_date(authenticated_receiver->data->client);
+    user_balance = user_balance - value;
+    if (user_balance < 0){
+      printf("Insuficient founds on wallet.\n");
+      return 0;
+    }
+    receiver_balance = receiver_balance + value;
+    delete_client_account(matricula);
+    delete_client_account(transfer_mat);
+    file = fopen("storage/accounts.csv", "a");
+    fprintf(file, "%s,%s,%.2f,%.2f,%s,\n%s,%s,%.2f,%.2f,%s,\n", user_name, matricula, user_balance, transfer_limit, user_reg_date, receiver_name, transfer_mat, receiver_balance, receiver_transfer_limit, receiver_reg_date);
+    rewind(file);
+    fclose(file);
+  }
+  return value;
+}
+
 void new_client(Client *client){
   client->name = (char*) malloc(50 * sizeof(char));
   client->matricula = (char*) malloc(20 * sizeof(char));
@@ -237,16 +299,27 @@ List* create_list_accounts(FILE *file, int file_lines){
   float fourth_column;
   int i = 0;
   while(i < file_lines){
-    fscanf(file, "%[^,],%[^,],%f,%f,%[^,],\n", first_column, second_column, &third_column, &fourth_column, fifth_column);
     List *new_block = (List*) malloc(sizeof(List));
     new_block->data = malloc(sizeof(Client)); //YOU HAVE TO MALLOC THE DATA UNION AND THE CLIENT STRUCT THAT IS INSIDE DATA
     new_block->data->client = (Client*) malloc(sizeof(Client));
     new_client(new_block->data->client);
-    set_client_name(new_block->data->client, first_column);
-    set_client_matricula(new_block->data->client, second_column);
-    set_client_balance(new_block->data->client, third_column);
-    set_client_transfer_limit(new_block->data->client, fourth_column);
-    set_client_reg_date(new_block->data->client, fifth_column);
+    fscanf(file, "%[^,],", first_column);
+    if (first_column[0] == '!'){
+      char third_char_column[50], fourth_char_column[50];
+      fscanf(file, "%[^,],%[^,],%[^,],%[^,],\n", second_column, third_char_column, fourth_char_column, fifth_column);
+      set_client_name(new_block->data->client, first_column);
+      set_client_matricula(new_block->data->client, second_column);
+      set_client_char_balance(new_block->data->client, third_char_column);
+      set_client_char_transfer_limit(new_block->data->client, fourth_char_column);
+      set_client_reg_date(new_block->data->client, fifth_column);
+    } else {
+        fscanf(file, "%[^,],%f,%f,%[^,],\n", second_column, &third_column, &fourth_column, fifth_column);
+        set_client_name(new_block->data->client, first_column);
+        set_client_matricula(new_block->data->client, second_column);
+        set_client_balance(new_block->data->client, third_column);
+        set_client_transfer_limit(new_block->data->client, fourth_column);
+        set_client_reg_date(new_block->data->client, fifth_column);
+    }
     List *aux;
     if (list == NULL){
       new_block->prev = (List*) NULL;
@@ -415,7 +488,7 @@ void delete_client_account(char *matricula){
   fclose(file);
 }
 
-void logger(int option, char *matricula, float value){
+void logger(int option, char *matricula, float value, char *transfer_mat){
   FILE *file = fopen("storage/production.log", "a");
   int day = date_day();
   int month = date_month();
@@ -430,6 +503,12 @@ void logger(int option, char *matricula, float value){
     case 2:
       fprintf(file, "%s,deposited $ %.2f,%d/%d/%d,%d:%d:%d,\n", matricula,value,day,month,year,hour,minutes,seconds);
       break;
+    case 3:
+      fprintf(file, "%s,removed $ %.2f,%d/%d/%d,%d:%d:%d,\n", matricula,value,day,month,year,hour,minutes,seconds);
+      break;
+    case 4:
+      fprintf(file, "%s,made a transfer of $ %.2f to %s,%d/%d/%d,%d:%d:%d,\n", matricula,value, transfer_mat, day,month,year,hour,minutes,seconds);
+      break;
   }
 }
 
@@ -439,14 +518,22 @@ void clear_database(){
   List *logins = create_list_logins(file, file_lines);
   rewind(file);
   fclose(file);
-  List *aux;
+  List *aux = logins;
   int position;
   int count = 0;
-  for (aux = logins; aux != NULL; aux = aux->next){
+  int auxi_var = 1;
+  while (aux != NULL){
     count++;
-    if (aux->data->user->matricula[0] == '!'){
+    auxi_var = 1;
+    if (aux->data->user->name[0] == '!'){
       position = count;
       logins = delete_block(logins, position);
+      aux = logins;
+      count = 0;
+      auxi_var = 0;
+    }
+    if (auxi_var == 1){
+      aux = aux->next;
     }
   }
   file = fopen("storage/login.csv", "w");
@@ -465,14 +552,22 @@ void clear_database(){
   List *list = create_list_char(accounts, accounts_lines);
   rewind(accounts);
   fclose(accounts);
-  List *a;
+  List *a = list;
   int pos;
   count = 0;
-  for (a = list; a != NULL; a = a->next){
+  int aux_var = 1;
+  while (a != NULL){
     count++;
-    if (a->data->client->matricula[0] == '!'){
+    aux_var = 1;
+    if (a->data->client->name[0] == '!'){
       pos = count;
       list = delete_block(list, pos);
+      a = list;
+      count = 0;
+      aux_var = 0;
+    }
+    if (aux_var == 1){
+      a = a->next;
     }
   }
   accounts = fopen("storage/accounts.csv", "w");

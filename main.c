@@ -11,6 +11,6 @@
 
 
 int main(){
-  home_page();
+  clear_database();
 return 0;
 }

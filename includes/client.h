@@ -13,6 +13,7 @@
 void client_menu(List *node);
 void view_balance(char *matricula);
 float change_balance(char *authentic_mat, char *action);
+float make_transfer(char *matricula, char *transfer_mat);
 void new_client(Client *client);
 char* get_client_name(Client *node);
 char* get_client_matricula(Client *node);
@@ -31,7 +32,7 @@ List* create_list_char(FILE *file, int file_lines);
 void print_list_of_clients(List *list);
 void print_char_list(List *list);
 void delete_client_account(char *matricula);
-void logger(int option, char *matricula, float value);
+void logger(int option, char *matricula, float value, char *transfer_mat);
 void clear_database();
 
 #endif

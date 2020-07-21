@@ -5,6 +5,7 @@ void home_page(){
   int *t = (int*) malloc(sizeof(int));
   t[0] = 1;
   while (t[0] == 1){
+    system("clear");
     List *authenticated_user = login(authenticated_role, t);
     char manager[] = "manager";
     char client[] = "client";
