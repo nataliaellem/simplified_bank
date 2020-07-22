@@ -41,4 +41,8 @@ This file contains the functions related to the actions that the logged manager 
 
 Accounts.csv contains customer account information and login.csv contains information regarding manager and customer logins. To store and assist in the creation of new accounts, the files "client_mat.val" and "manager_mat.val" contain the latest registrations of customers and managers registered in the system. Finally, in "production.log" are customer statements.
 
+## Execution
+
+
+To run the program on the Linux Deepin SO, just call the "Makefile" file in the terminal.
 
