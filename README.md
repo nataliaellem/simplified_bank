@@ -36,5 +36,9 @@ This file contains functions that use the "user" struct within linked lists. Fir
 
 This file contains the functions related to the actions that the logged manager can perform on the system. First, the menu shows the options and calls the respective functions. The manager can create a new account with "create new account", delete an account with "delete account", change a customer's transfer limit with "change transfer limit", list customers in alphabetical order, list customers by registration date with "list by reg date" and list bank reserves with "bank reserve".
 
+## Storage
+
+
+Accounts.csv contains customer account information and login.csv contains information regarding manager and customer logins. To store and assist in the creation of new accounts, the files "client_mat.val" and "manager_mat.val" contain the latest registrations of customers and managers registered in the system. Finally, in "production.log" are customer statements.
 
 
