@@ -142,12 +142,12 @@ float change_balance(char *authentic_mat, char *action){
   int n = 1;
   float value;
   while (n) {
-    printf("Type '0' to exit.\n");
     if (strcmp(action, deposit) == 0){
-      printf("Or enter the amount to be deposited: \n");
+      printf("Enter the amount to be deposited: \n");
     } else if (strcmp(action, remove) == 0){
-        printf("Or enter the amount to be withdrawn: \n");
+        printf("Enter the amount to be withdrawn: \n");
     }
+    printf("(Or type '0' to exit.)\n");
     scanf("%f", &value);
     if (value == 0){
       return 0;
@@ -235,10 +235,15 @@ float make_transfer(char *matricula, char *transfer_mat){
     delete_client_account(matricula);
     delete_client_account(transfer_mat);
     file = fopen("storage/accounts.csv", "a");
-    fprintf(file, "%s,%s,%.2f,%.2f,%s,\n%s,%s,%.2f,%.2f,%s,\n", user_name, matricula, user_balance, transfer_limit, user_reg_date, receiver_name, transfer_mat, receiver_balance, receiver_transfer_limit, receiver_reg_date);
+    fprintf(file, "%s,%s,%.2f,%.2f,%s,\n", user_name, matricula, user_balance, transfer_limit, user_reg_date);
+    rewind(file);
+    fclose(file);
+    file = fopen("storage/accounts.csv", "a");
+    fprintf(file, "%s,%s,%.2f,%.2f,%s,\n", receiver_name, transfer_mat, receiver_balance, receiver_transfer_limit, receiver_reg_date);
     rewind(file);
     fclose(file);
   }
+  printf("Operation performed successfully.\n");
   return value;
 }
 
