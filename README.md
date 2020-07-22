@@ -32,5 +32,9 @@ In list.c, "new node" allocates a new block of type "List", "delete block" takes
 
 This file contains functions that use the "user" struct within linked lists. First "new login" allocates in memory the attributes (char*) of "user", right after the "get" and "set" functions respectively, take the user's attribute and insert a new attribute in a user. "Create list logins" creates a linked list with the lines from the "login.csv" file while "print list logins" prints this list. Finally, "new block" receives a linked list and inserts a block of type "user" in this list, calling the function "new linked block", and "filter logins" receives a list, a "get" function pointer, an attribute (string) and returns a list of users that contain the received attribute.
 
+### Manager.c
+
+This file contains the functions related to the actions that the logged manager can perform on the system. First, the menu shows the options and calls the respective functions. The manager can create a new account with "create new account", delete an account with "delete account", change a customer's transfer limit with "change transfer limit", list customers in alphabetical order, list customers by registration date with "list by reg date" and list bank reserves with "bank reserve".
+
 
 
