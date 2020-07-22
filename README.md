@@ -1,1 +1,5 @@
-# simplified_bank
+# Simplified Bank
+
+##Introduction
+
+This project consists 
