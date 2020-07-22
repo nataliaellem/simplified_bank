@@ -17,5 +17,10 @@ The client menu function presents the options that the client type user can exec
 
 This file contains some functions that are important in the program but that are not specifically related to client or manager activities. The "reading" function reads user strings in a way that does not waste memory. "Sort list" sorts a list of strings, "number of file lines" receives a file and counts how many lines it has, and finally, the other functions return the current time and date.
 
+### Homepage.c
+
+
+This file contains only the "login" function, which asks for and verifies the registration and password of the user, as well as their role (customer or manager). This function displays the login screen during execution until the user enters '0' to exit.
+
 
 
