@@ -22,15 +22,10 @@ typedef struct client {
   char *reg_date;
 } Client;
 
-typedef struct manager{
-  char *name;
-  char *matricula;
-} Manager;
 
 typedef union {
   User *user;
   Client *client;
-  Manager *manager;
 } Data;
 
 #endif
