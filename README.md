@@ -13,3 +13,8 @@
   
   
 ## Includes
+
+   In the list.h file, the struct 'List' is defined, which will be used in linked lists throughout the code. The union      'Data', attribute of 'List', is defined in the models.h folder. Also in this folder, the structs 'user', 'client' and    'manager' are defined
+
+
+
